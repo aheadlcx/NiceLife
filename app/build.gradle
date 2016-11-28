@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "24.0.2"
+    defaultConfig {
+        applicationId "me.aheadlcx.nicelife"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    testCompile 'junit:junit:4.12'
+
+
+    //compile myself
+    def nicepaeDependencies = rootProject.ext.nicepaeDependencies
+    compile nicepaeDependencies.daggerCompiler
+    compile nicepaeDependencies.dagger
+
+    compile nicepaeDependencies.rxJava
+    compile nicepaeDependencies.rxAndroid
+    compile nicepaeDependencies.okHttp
+    compile nicepaeDependencies.retrofit
+    compile nicepaeDependencies.retrofitConverter
+    compile nicepaeDependencies.retroRxAdapter
+    compile nicepaeDependencies.glide
+    compile nicepaeDependencies.oklog
+
+    compile nicepaeDependencies.javaxAnnotation
+    compile nicepaeDependencies.androidAnnotations
+
+    compile nicepaeDependencies.recyclerView
+
+    //end
+}
