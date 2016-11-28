@@ -63,7 +63,7 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
 
     @Override
     protected void loadData() {
-        mPresent.loadData("0");
+        mPresent.loadData("1");
 //        HealthNewsListService service = ApiUtils.getRetrofit().create(HealthNewsListService.class);
 //        Observable<HealthNewsListResponse> healthNewsList = service.getHealthNewsList("0");
 //        healthNewsList.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
