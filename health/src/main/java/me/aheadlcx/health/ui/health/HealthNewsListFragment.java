@@ -18,7 +18,8 @@ import me.aheadlcx.health.R;
 import me.aheadlcx.health.api.ApiUtils;
 import me.aheadlcx.health.api.HealthNewsListService;
 import me.aheadlcx.health.base.BaseFragment;
-import me.aheadlcx.health.di.components.DaggerHealthNewsComponents;
+import me.aheadlcx.health.di.components .DaggerHealthNewsComponents;
+import me.aheadlcx.health.di.components.DaggerTestComponent;
 import me.aheadlcx.health.di.modules.ActivityModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
 import me.aheadlcx.health.model.HealthNewsItem;
@@ -56,7 +57,7 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
                 .activityModule(new ActivityModule(getActivity()))
                 .healthNewsModule(new HealthNewsModule())
                 .build().inject(this);
-//        .testComponent(DaggerTestComponent.builder().build())
+//                .testComponent(DaggerTestComponent.builder().build())
         mPresent.setUi(this);
 
     }

@@ -13,8 +13,8 @@ import me.aheadlcx.health.di.test.TestDi;
  * Date:2016/11/28 下午2:42
  */
 @Singleton
-@Component
+@Component(modules = TestModule.class)
 public interface TestComponent {
-    TestDi getTestDi();
+    TestDi getDTestDi();
 //modules = TestModule.class
 }

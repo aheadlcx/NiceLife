@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import me.aheadlcx.health.di.test.TestDi;
+import me.aheadlcx.health.di.test.TestDiImpl;
 
 /**
  * Description:
@@ -12,12 +13,14 @@ import me.aheadlcx.health.di.test.TestDi;
  * Date:2016/11/28 下午2:43
  */
 
-//@Module
+@Module
 public class TestModule {
+    public TestModule() {
+    }
 
-//    @Provides
 //    @Singleton
-    public TestDi getTestDi(TestDi testDi){
-        return testDi;
+    @Provides
+    public TestDi getTestDi(TestDiImpl testDiImpl) {
+        return testDiImpl;
     }
 }

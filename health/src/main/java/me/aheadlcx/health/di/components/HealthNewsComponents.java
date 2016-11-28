@@ -5,6 +5,7 @@ import me.aheadlcx.health.di.PerActivity;
 import me.aheadlcx.health.di.modules.ActivityModule;
 import me.aheadlcx.health.di.modules.ApplicationModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
+import me.aheadlcx.health.di.modules.TestModule;
 import me.aheadlcx.health.ui.health.HealthNewsListFragment;
 
 /**
@@ -14,7 +15,7 @@ import me.aheadlcx.health.ui.health.HealthNewsListFragment;
  */
 @PerActivity
 @Component( dependencies = {ApplicationComponent.class}, modules = {ActivityModule
-        .class, HealthNewsModule.class})
+        .class, HealthNewsModule.class, TestModule.class})
 public interface HealthNewsComponents extends ActivityComponent{
     void inject(HealthNewsListFragment healthNewsListFragment);
 

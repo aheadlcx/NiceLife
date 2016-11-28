@@ -4,6 +4,7 @@ import android.app.Application;
 
 import me.aheadlcx.health.di.components.ApplicationComponent;
 import me.aheadlcx.health.di.components.DaggerApplicationComponent;
+import me.aheadlcx.health.di.components.TestComponent;
 import me.aheadlcx.health.di.modules.ApplicationModule;
 
 /**
@@ -21,6 +22,7 @@ public class MyApplication extends Application {
         instance = this;
          applicationComponent= DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this))
                 .build();
+//        TestComponent build = DaggerTestComponent.builder().build();
     }
 
     public static MyApplication getInstance() {
