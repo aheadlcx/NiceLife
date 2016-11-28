@@ -53,7 +53,7 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
 
         @Override
         public void onError(Throwable e) {
-            Log.i(TAG, "onError: ");
+            Log.i(TAG, "onError: " + e.getMessage() + e.getLocalizedMessage() + e.toString());
             super.onError(e);
         }
 

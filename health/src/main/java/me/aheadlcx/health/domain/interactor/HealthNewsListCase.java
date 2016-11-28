@@ -2,6 +2,7 @@ package me.aheadlcx.health.domain.interactor;
 
 import javax.inject.Inject;
 
+import me.aheadlcx.health.data.repository.HealthNewsDataRepository;
 import me.aheadlcx.health.di.test.TestDi;
 import me.aheadlcx.health.domain.executor.PostExecutionThread;
 import me.aheadlcx.health.domain.executor.ThreadExecutor;
@@ -27,5 +28,13 @@ public class HealthNewsListCase extends Case {
     @Override
     public Observable buildCaseObservable(String page) {
         return mRepository.buildHealthNewsObservabler(page);
+    }
+
+    @Override
+    public void connect() {
+        super.connect();
+        if (mRepository instanceof HealthNewsDataRepository){
+            ((HealthNewsDataRepository)mRepository).connect();
+        }
     }
 }

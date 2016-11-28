@@ -32,7 +32,14 @@ public abstract class Case {
     public void execute(String page, Subscriber subscriber){
          mSubscription = this.buildCaseObservable(page).subscribeOn(Schedulers.from(mThreadExecutor))
                 .observeOn(mPostExecutionThread.getScheduler())
+//        mSubscription = this.buildCaseObservable(page).subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
                 .subscribe(subscriber);
+        connect();
+    }
+
+    public void connect(){
+
     }
 
     public void unSubscribe(){

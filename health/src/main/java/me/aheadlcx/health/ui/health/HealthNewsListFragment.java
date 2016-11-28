@@ -18,7 +18,7 @@ import me.aheadlcx.health.R;
 import me.aheadlcx.health.api.ApiUtils;
 import me.aheadlcx.health.api.HealthNewsListService;
 import me.aheadlcx.health.base.BaseFragment;
-import me.aheadlcx.health.di.components .DaggerHealthNewsComponents;
+import me.aheadlcx.health.di.components.DaggerHealthNewsComponents;
 import me.aheadlcx.health.di.components.DaggerTestComponent;
 import me.aheadlcx.health.di.modules.ActivityModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
