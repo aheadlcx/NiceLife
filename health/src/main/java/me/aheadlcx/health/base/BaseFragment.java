@@ -18,6 +18,15 @@ public abstract class BaseFragment extends Fragment {
         loadData();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initIntent();
+    }
+
+    public void initIntent() {
+    }
+
     protected abstract void inject();
 
     protected abstract void loadData();

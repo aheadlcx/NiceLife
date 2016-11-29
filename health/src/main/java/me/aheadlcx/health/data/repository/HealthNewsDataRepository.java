@@ -22,7 +22,7 @@ import rx.schedulers.Schedulers;
 public class HealthNewsDataRepository implements HealthNewsRepository {
     private static final String TAG = "HealthNewsDataRepositor";
     private HealthNewsLocalRepo mLocalRepo;
-    private HealthNewsRepository mNetRepo;
+    private HealthNewsNetRepo mNetRepo;
     ConnectableObservable replay;
 
     @Inject
@@ -34,8 +34,13 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
     @Override
     public Observable buildHealthNewsObservabler(String page) {
         Observable observable = mNetRepo.buildHealthNewsObservabler(page);
-        replay = observable.replay(20);
-        return replay;
+//        replay = observable.replay(20);
+        return observable;
+    }
+
+    @Override
+    public Observable buildHealthNewsDetailObservabler(long id) {
+        return mNetRepo.buildHealthNewsDetailObservabler(id);
     }
 
     private void subscribeAnthoer() {
@@ -61,12 +66,12 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
 
     public void connect() {
         if (replay != null) {
-            subscribeAnthoer();
+//            subscribeAnthoer();
 //            new Thread(){
 //                @Override
 //                public void run() {
 //                    super.run();
-                    replay.connect();
+//                    replay.connect();
 //                }
 //            }.start();
         }

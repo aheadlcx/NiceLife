@@ -1,5 +1,6 @@
 package me.aheadlcx.health.api;
 
+import me.aheadlcx.health.model.HealthNewsDetailResponse;
 import me.aheadlcx.health.model.HealthNewsListResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,4 +20,7 @@ public interface HealthNewsListService {
 
     @GET("api/info/list")
     Call<HealthNewsListResponse> getHealthNewsListSync();
+
+    @GET("api/info/show")
+    Observable<HealthNewsDetailResponse> getHealthNewsDetail(@Query("id") long id);
 }

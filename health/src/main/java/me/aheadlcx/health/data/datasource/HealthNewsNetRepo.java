@@ -32,4 +32,9 @@ public class HealthNewsNetRepo implements HealthNewsRepository {
                 }
     );
     }
+
+    @Override
+    public Observable buildHealthNewsDetailObservabler(long id) {
+        return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsDetail(id);
+    }
 }

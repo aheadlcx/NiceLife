@@ -33,16 +33,17 @@ import static org.junit.Assert.assertTrue;
  */
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class,sdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class HealthTest {
     private static final String TAG = "HealthTest";
+
     @Before
     public void setUp() throws URISyntaxException {
         //输出日志
         ShadowLog.stream = System.out;
     }
 
-    @Test
+    //    @Test
     public void testHealthNewsList() throws IOException {
         Retrofit retrofit = ApiUtils.getRetrofit();
         HealthNewsListService healthNewsListService = retrofit.create(HealthNewsListService.class);
@@ -55,5 +56,24 @@ public class HealthTest {
         Gson gson = new Gson();
         String json = gson.toJson(body);
         Log.i(TAG, "testHealthNewsList: " + json);
+    }
+
+    @Test
+    public void testInt() {
+        int a = 0;
+        int b = 1;
+        int c = 3;
+
+        boolean b1 = (c & 2) != 0;
+        Log.i(TAG, "testInt: b1 = " + b1);
+        assertTrue(b1);
+        int d = 1 << 2;
+        Log.i(TAG, "testInt: d =" + d);
+
+        int aa = 0x0002;
+        int ab = 0x0004;
+        boolean b2 = (aa & ab) != 0;
+        Log.i(TAG, "testInt: b2 = " +  b2);
+
     }
 }

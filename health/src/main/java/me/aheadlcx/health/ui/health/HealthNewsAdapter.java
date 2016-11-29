@@ -1,6 +1,7 @@
 package me.aheadlcx.health.ui.health;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.List;
 import me.aheadlcx.health.R;
 import me.aheadlcx.health.api.ApiConstant;
 import me.aheadlcx.health.model.HealthNewsItem;
+import me.aheadlcx.health.ui.health.detail.HealthNewsDetailActivity;
 
 /**
  * Description:
@@ -47,12 +49,21 @@ public class HealthNewsAdapter extends RecyclerView.Adapter<HealthNewsAdapter.VH
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public void onBindViewHolder(VH holder, final int position) {
         holder.itemTitle.setText(mList.get(position).getTitle());
         holder.txtItemDes.setText(mList.get(position).getDescription());
         holder.txtItemLabel.setText(mList.get(position).getKeywords());
         Glide.with(mContext).load(ApiConstant.base_img_url + mList.get(position).getImg()).into
                 (holder.itemImage);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, HealthNewsDetailActivity.class);
+                intent.putExtra("id", ((long) (mList.get(position).getId())));
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override

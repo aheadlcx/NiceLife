@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import me.aheadlcx.health.di.Type;
 import me.aheadlcx.health.domain.interactor.Case;
 import me.aheadlcx.health.domain.interactor.DefaultSubscriber;
 import me.aheadlcx.health.model.HealthNewsItem;
@@ -25,7 +26,7 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
     private HealthNewslistContract.View mUi;
 
     @Inject
-    public HealthNewsListPresent(Case aCase, Context context) {
+    public HealthNewsListPresent(@Type("list") Case aCase, Context context) {
         mCase = aCase;
         mContext = context;
     }

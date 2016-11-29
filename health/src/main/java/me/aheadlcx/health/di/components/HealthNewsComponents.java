@@ -7,6 +7,7 @@ import me.aheadlcx.health.di.modules.ApplicationModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
 import me.aheadlcx.health.di.modules.TestModule;
 import me.aheadlcx.health.ui.health.HealthNewsListFragment;
+import me.aheadlcx.health.ui.health.detail.HealthNewsDetailFragment;
 
 /**
  * Description:
@@ -18,5 +19,6 @@ import me.aheadlcx.health.ui.health.HealthNewsListFragment;
         .class, HealthNewsModule.class, TestModule.class})
 public interface HealthNewsComponents extends ActivityComponent{
     void inject(HealthNewsListFragment healthNewsListFragment);
+    void inject(HealthNewsDetailFragment healthNewsDetailFragment);
 
 }

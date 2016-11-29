@@ -11,5 +11,6 @@ import rx.Observable;
 public interface HealthNewsRepository {
 
     Observable buildHealthNewsObservabler(String page);
+    Observable buildHealthNewsDetailObservabler(long page);
 
 }

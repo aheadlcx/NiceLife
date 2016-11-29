@@ -14,4 +14,9 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
     public Observable buildHealthNewsObservabler(String page) {
         return null;
     }
+
+    @Override
+    public Observable buildHealthNewsDetailObservabler(long page) {
+        return null;
+    }
 }

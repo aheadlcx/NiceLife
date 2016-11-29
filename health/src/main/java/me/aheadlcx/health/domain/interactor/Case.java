@@ -18,7 +18,7 @@ public abstract class Case {
 
     private Subscription mSubscription = Subscriptions.empty();
 
-    private final PostExecutionThread mPostExecutionThread ;
+    private final PostExecutionThread mPostExecutionThread;
     private final ThreadExecutor mThreadExecutor;
 
     public Case(PostExecutionThread postExecutionThread, ThreadExecutor threadExecutor) {
@@ -26,24 +26,36 @@ public abstract class Case {
         mThreadExecutor = threadExecutor;
     }
 
-    public abstract Observable buildCaseObservable(String page);
+    public Observable buildCaseObservable(String page) {
+        return null;
+    }
+
+    public Observable buildHealthNewsDetailObservable(long id) {
+        return null;
+    }
 
 
-    public void execute(String page, Subscriber subscriber){
-         mSubscription = this.buildCaseObservable(page).subscribeOn(Schedulers.from(mThreadExecutor))
+    public void execute(String page, Subscriber subscriber) {
+        mSubscription = this.buildCaseObservable(page).subscribeOn(Schedulers.from(mThreadExecutor))
                 .observeOn(mPostExecutionThread.getScheduler())
-//        mSubscription = this.buildCaseObservable(page).subscribeOn(Schedulers.io())
-//                .observeOn(Schedulers.io())
                 .subscribe(subscriber);
         connect();
     }
 
-    public void connect(){
+    public void execute(long id, Subscriber subscriber) {
+        mSubscription = this.buildHealthNewsDetailObservable(id).subscribeOn(Schedulers.from
+                (mThreadExecutor))
+                .observeOn(mPostExecutionThread.getScheduler())
+                .subscribe(subscriber);
+        connect();
+    }
+
+    public void connect() {
 
     }
 
-    public void unSubscribe(){
-        if (mSubscription != null && ! mSubscription.isUnsubscribed()) {
+    public void unSubscribe() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
     }
