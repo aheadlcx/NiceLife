@@ -2,14 +2,21 @@ package me.aheadlcx.health.data.repository;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import me.aheadlcx.health.data.datasource.HealthNewsLocalRepo;
 import me.aheadlcx.health.data.datasource.HealthNewsNetRepo;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
+import me.aheadlcx.health.model.HealthNewsItem;
+import me.aheadlcx.health.model.HealthNewsListResponse;
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.observables.ConnectableObservable;
 import rx.schedulers.Schedulers;
 
@@ -32,15 +39,40 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
     }
 
     @Override
-    public Observable buildHealthNewsObservabler(String page) {
-        Observable observable = mNetRepo.buildHealthNewsObservabler(page);
-//        replay = observable.replay(20);
-        return observable;
+    public Observable buildHealthNewsObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+//        final Observable observable = mNetRepo.buildHealthNewsObservabler(page);
+        Observable localObservale = mLocalRepo.buildHealthNewsObservabler(page, subscribeOnScheduler, observeOnScheduler);
+        Observable netObservale = mNetRepo
+                .buildHealthNewsObservabler(page, subscribeOnScheduler, observeOnScheduler);
+
+        Observable<List<HealthNewsItem>> createObservable = Observable.create(new Observable.OnSubscribe<HealthNewsListResponse>() {
+            @Override
+            public void call(Subscriber<? super HealthNewsListResponse> subscriber) {
+                Log.i(TAG, "call:  create call ");
+                HealthNewsListResponse response = new HealthNewsListResponse();
+                ArrayList<HealthNewsItem> tngou = new ArrayList<>();
+                HealthNewsItem healthNewsItem = new HealthNewsItem();
+                healthNewsItem.setTitle("create by aheadlcx");
+                tngou.add(healthNewsItem);
+                response.setTngou(tngou);
+                subscriber.onNext(response);
+                subscriber.onCompleted();
+            }
+        }).map(new Func1<HealthNewsListResponse, List<HealthNewsItem>>() {
+            @Override
+            public List<HealthNewsItem> call(HealthNewsListResponse response) {
+                return response.getTngou();
+            }
+        });
+        return Observable.concat(localObservale, netObservale)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread());
+//        return observable;
     }
 
     @Override
-    public Observable buildHealthNewsDetailObservabler(long id) {
-        return mNetRepo.buildHealthNewsDetailObservabler(id);
+    public Observable buildHealthNewsDetailObservabler(long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+        return mNetRepo.buildHealthNewsDetailObservabler(id, subscribeOnScheduler, observeOnScheduler);
     }
 
     private void subscribeAnthoer() {

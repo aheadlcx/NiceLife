@@ -1,11 +1,13 @@
 package me.aheadlcx.health.model;
 
+import io.realm.RealmObject;
+
 /**
  * Description:
  * Creator: aheadlcx
  * Date:2016/11/27 下午9:03
  */
-public class HealthNewsItem {
+public class HealthNewsItem extends RealmObject{
     private int count;
     private String description;
     private int fcount;

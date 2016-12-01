@@ -69,7 +69,7 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
 
     @Override
     public void setData(List<HealthNewsItem> lists) {
-        if (lists != null) {
+        if (lists != null && lists.size() != 0) {
             HealthNewsAdapter adapter = new HealthNewsAdapter(lists
                     , getActivity());
             recycleView.setLayoutManager(new LinearLayoutManager(getActivity()));

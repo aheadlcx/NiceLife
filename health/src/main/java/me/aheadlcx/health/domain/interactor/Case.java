@@ -3,6 +3,7 @@ package me.aheadlcx.health.domain.interactor;
 import me.aheadlcx.health.domain.executor.PostExecutionThread;
 import me.aheadlcx.health.domain.executor.ThreadExecutor;
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
@@ -36,16 +37,21 @@ public abstract class Case {
 
 
     public void execute(String page, Subscriber subscriber) {
-        mSubscription = this.buildCaseObservable(page).subscribeOn(Schedulers.from(mThreadExecutor))
-                .observeOn(mPostExecutionThread.getScheduler())
+        mSubscription = this.buildCaseObservable(page)
                 .subscribe(subscriber);
         connect();
     }
 
+    public Scheduler getSubscribeOnScheduler() {
+        return Schedulers.from(mThreadExecutor);
+    }
+
+    public Scheduler getObserveOnScheduler() {
+        return mPostExecutionThread.getScheduler();
+    }
+
     public void execute(long id, Subscriber subscriber) {
-        mSubscription = this.buildHealthNewsDetailObservable(id).subscribeOn(Schedulers.from
-                (mThreadExecutor))
-                .observeOn(mPostExecutionThread.getScheduler())
+        mSubscription = this.buildHealthNewsDetailObservable(id)
                 .subscribe(subscriber);
         connect();
     }

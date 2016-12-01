@@ -1,6 +1,7 @@
 package me.aheadlcx.health.domain.repository;
 
 import rx.Observable;
+import rx.Scheduler;
 
 /**
  * Description:
@@ -10,7 +11,7 @@ import rx.Observable;
 
 public interface HealthNewsRepository {
 
-    Observable buildHealthNewsObservabler(String page);
-    Observable buildHealthNewsDetailObservabler(long page);
+    Observable buildHealthNewsObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler);
+    Observable buildHealthNewsDetailObservabler(long page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler);
 
 }

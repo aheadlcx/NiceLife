@@ -2,6 +2,8 @@ package me.aheadlcx.health;
 
 import android.app.Application;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import me.aheadlcx.health.di.components.ApplicationComponent;
 import me.aheadlcx.health.di.components.DaggerApplicationComponent;
 import me.aheadlcx.health.di.components.TestComponent;
@@ -22,7 +24,15 @@ public class MyApplication extends Application {
         instance = this;
          applicationComponent= DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this))
                 .build();
-//        TestComponent build = DaggerTestComponent.builder().build();
+
+        initDb();
+    }
+
+    private void initDb() {
+        Realm.init(this);
+        RealmConfiguration configuration =new RealmConfiguration.Builder().build();
+        Realm.deleteRealm(configuration);
+        Realm.setDefaultConfiguration(configuration);
     }
 
     public static MyApplication getInstance() {

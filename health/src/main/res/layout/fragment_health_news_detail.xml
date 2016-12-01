@@ -22,7 +22,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#bcb7b7">
+            android:background="#b3b4ae">
 
             <TextView
                 android:id="@+id/txtDes"
