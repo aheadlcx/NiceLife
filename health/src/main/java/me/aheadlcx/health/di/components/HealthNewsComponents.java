@@ -15,10 +15,11 @@ import me.aheadlcx.health.ui.health.detail.HealthNewsDetailFragment;
  * Date:2016/11/28 上午11:03
  */
 @PerActivity
-@Component( dependencies = {ApplicationComponent.class}, modules = {ActivityModule
-        .class, HealthNewsModule.class, TestModule.class})
-public interface HealthNewsComponents extends ActivityComponent{
+@Component(dependencies = {ApplicationComponent.class}, modules =
+        {ActivityModule.class, HealthNewsModule.class, TestModule.class})
+public interface HealthNewsComponents extends ActivityComponent {
     void inject(HealthNewsListFragment healthNewsListFragment);
+
     void inject(HealthNewsDetailFragment healthNewsDetailFragment);
 
 }

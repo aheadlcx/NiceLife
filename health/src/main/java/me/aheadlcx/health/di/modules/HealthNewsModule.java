@@ -1,5 +1,7 @@
 package me.aheadlcx.health.di.modules;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import me.aheadlcx.health.data.repository.HealthNewsDataRepository;
@@ -33,11 +35,6 @@ public class HealthNewsModule {
         return present;
     }
 
-    @Provides
-    @PerActivity
-    public HealthNewsRepository provideHealthNewsRepo(HealthNewsDataRepository repository){
-        return repository;
-    }
 
     @Type("detail")
     @Provides
@@ -45,4 +42,10 @@ public class HealthNewsModule {
     public Case provideHealthNewsDetailCase(HealthNewsDetailCase healthNewsDetailCase){
         return healthNewsDetailCase;
     }
+
+//    @Provides
+//    @PerActivity
+//    public HealthNewsRepository provideHealthNewsRepo(HealthNewsDataRepository repository){
+//        return repository;
+//    }
 }

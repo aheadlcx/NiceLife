@@ -1,5 +1,6 @@
 package me.aheadlcx.health.data.repository;
 
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import javax.inject.Singleton;
 import me.aheadlcx.health.data.datasource.HealthNewsLocalRepo;
 import me.aheadlcx.health.data.datasource.HealthNewsNetRepo;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
+import me.aheadlcx.health.model.HealthNewsDetailResponse;
 import me.aheadlcx.health.model.HealthNewsItem;
 import me.aheadlcx.health.model.HealthNewsListResponse;
 import rx.Observable;
@@ -33,6 +35,8 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
     private HealthNewsNetRepo mNetRepo;
     ConnectableObservable replay;
 
+    private ArrayMap<Long, HealthNewsDetailResponse> detailResp = new ArrayMap<>();
+
     @Inject
     public HealthNewsDataRepository() {
         mLocalRepo = new HealthNewsLocalRepo();
@@ -51,13 +55,33 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
                         mLocalRepo.insertToDb(data);
                     }
                 });
-//        return Observable.concat(testCode(), netObservale);
         return Observable.concat(localObservale, netObservale);
     }
 
     @Override
-    public Observable healthNewsDetailObservabler(long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
-        return mNetRepo.healthNewsDetailObservabler(id, subscribeOnScheduler, observeOnScheduler);
+    public Observable healthNewsDetailObservabler(final long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+        if (detailResp.get(id) != null) {
+            return Observable.create(new Observable.OnSubscribe<HealthNewsDetailResponse>() {
+                @Override
+                public void call(Subscriber<? super HealthNewsDetailResponse> subscriber) {
+                    subscriber.onNext(detailResp.get(id));
+                    subscriber.onCompleted();
+                }
+            });
+        }
+        Observable net = mNetRepo.healthNewsDetailObservabler(id, subscribeOnScheduler,
+                observeOnScheduler)
+                .doOnNext(new Action1<HealthNewsDetailResponse>() {
+                    @Override
+                    public void call(HealthNewsDetailResponse healthNewsDetailResponse) {
+                        mLocalRepo.insertDetail(healthNewsDetailResponse);
+                        detailResp.put(id, healthNewsDetailResponse);
+                    }
+                });
+
+        Observable<HealthNewsDetailResponse> local = mLocalRepo.getDetail(id);
+
+        return Observable.concat(local, net);
     }
 
     private void subscribeAnthoer() {
@@ -94,7 +118,7 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
         }
     }
 
-    private Observable testCode(){
+    private Observable testCode() {
         Observable<List<HealthNewsItem>> createObservable = Observable.create(new Observable.OnSubscribe<HealthNewsListResponse>() {
             @Override
             public void call(Subscriber<? super HealthNewsListResponse> subscriber) {

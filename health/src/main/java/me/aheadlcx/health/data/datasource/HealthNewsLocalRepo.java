@@ -11,6 +11,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import me.aheadlcx.health.MyApplication;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
+import me.aheadlcx.health.model.HealthNewsDetailResponse;
 import me.aheadlcx.health.model.HealthNewsItem;
 import rx.Observable;
 import rx.Scheduler;
@@ -25,7 +26,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class HealthNewsLocalRepo implements HealthNewsRepository {
-
+    private static final String TAG = "notify";
     @Override
     public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
         final boolean isUiThread = Looper.getMainLooper() == Looper.myLooper();
@@ -86,5 +87,33 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
             realm.commitTransaction();
             realm.close();
         }
+    }
+
+    public void insertDetail(HealthNewsDetailResponse response) {
+        if (response == null) {
+            return;
+        }
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+//        HealthNewsDetailResponse realmObject = realm.createObject(HealthNewsDetailResponse.class);
+        realm.copyToRealm(response);
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    public Observable<HealthNewsDetailResponse> getDetail(final long id) {
+        return Observable.create(new Observable.OnSubscribe<HealthNewsDetailResponse>() {
+            @Override
+            public void call(Subscriber<? super HealthNewsDetailResponse> subscriber) {
+                Log.i(TAG, "call: getDetail");
+                Realm realm = Realm.getDefaultInstance();
+                HealthNewsDetailResponse detailResponse = realm.where(HealthNewsDetailResponse.class).equalTo("id", id).findFirst();
+                if (detailResponse != null) {
+                    subscriber.onNext(detailResponse);
+                }
+                subscriber.onCompleted();
+                realm.close();
+            }
+        }).subscribeOn(Schedulers.io());
     }
 }

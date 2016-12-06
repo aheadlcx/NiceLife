@@ -22,6 +22,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class HealthNewsNetRepo implements HealthNewsRepository {
+    private static final String TAG = "notify";
     @Override
     public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
         return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsList(page)
@@ -33,19 +34,11 @@ public class HealthNewsNetRepo implements HealthNewsRepository {
                         return Observable.just(response.getTngou());
                     }
                 });
-//                .map(new Func1<HealthNewsListResponse, List<HealthNewsItem>>() {
-//                         @Override
-//                         public List<HealthNewsItem> call(HealthNewsListResponse response) {
-//                             long id = Thread.currentThread().getId();
-//                             Log.i("notify", "net call: id = " + id);
-//                                 return response.getTngou();
-//                         }
-//                     }
-//                );
     }
 
     @Override
     public Observable healthNewsDetailObservabler(long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+        Log.i(TAG, "healthNewsDetailObservabler: ");
         return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsDetail(id)
                 .subscribeOn(subscribeOnScheduler).observeOn(observeOnScheduler);
     }

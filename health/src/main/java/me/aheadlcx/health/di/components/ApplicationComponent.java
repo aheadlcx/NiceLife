@@ -20,8 +20,13 @@ import me.aheadlcx.health.domain.repository.HealthNewsRepository;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     void inject(BaseActivity baseActivity);
+
     Context getContext();
+
     ThreadExecutor threadExecutor();
+
     PostExecutionThread postExecutionThread();
-//    HealthNewsRepository healthNewsRepository();
+
+    HealthNewsRepository provideHealthNewsRepo();
+
 }
