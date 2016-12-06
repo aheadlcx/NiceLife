@@ -52,7 +52,8 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
                 .doOnNext(new Action1<List<HealthNewsItem>>() {
                     @Override
                     public void call(List<HealthNewsItem> data) {
-                        mLocalRepo.delete();
+                        //目前加载速度很快，先不担心分页加载的事情
+//                        mLocalRepo.delete();
                         mLocalRepo.insertToDb(data);
                     }
                 });
