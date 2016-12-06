@@ -6,6 +6,7 @@ import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
@@ -27,17 +28,19 @@ public abstract class Case {
         mThreadExecutor = threadExecutor;
     }
 
-    public Observable buildCaseObservable(String page) {
+    public Observable caseListObservable(String page) {
         return null;
     }
 
-    public Observable buildHealthNewsDetailObservable(long id) {
+    public Observable caseDetailObservable(long id) {
         return null;
     }
 
 
     public void execute(String page, Subscriber subscriber) {
-        mSubscription = this.buildCaseObservable(page)
+        mSubscription = this.caseListObservable(page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(subscriber);
         connect();
     }
@@ -51,7 +54,7 @@ public abstract class Case {
     }
 
     public void execute(long id, Subscriber subscriber) {
-        mSubscription = this.buildHealthNewsDetailObservable(id)
+        mSubscription = this.caseDetailObservable(id)
                 .subscribe(subscriber);
         connect();
     }

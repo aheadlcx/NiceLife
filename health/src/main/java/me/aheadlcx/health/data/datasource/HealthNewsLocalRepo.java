@@ -3,10 +3,13 @@ package me.aheadlcx.health.data.datasource;
 import android.os.Looper;
 import android.util.Log;
 
+import java.io.File;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
+import me.aheadlcx.health.MyApplication;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
 import me.aheadlcx.health.model.HealthNewsItem;
 import rx.Observable;
@@ -22,14 +25,10 @@ import rx.schedulers.Schedulers;
  */
 
 public class HealthNewsLocalRepo implements HealthNewsRepository {
+
     @Override
-    public Observable buildHealthNewsObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
-        boolean isUiThread = Looper.getMainLooper() == Looper.myLooper();
-        long id = Thread.currentThread().getId();
-        Log.i("notify", "local call: id = " + id + " ---  isUiThread = " + isUiThread);
-//        Realm realm = Realm.getDefaultInstance();
-//        RealmResults<HealthNewsItem> all = realm.where(HealthNewsItem.class).findAllAsync();
-//        return all.asObservable().subscribeOn(AndroidSchedulers.mainThread());
+    public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+        final boolean isUiThread = Looper.getMainLooper() == Looper.myLooper();
 
         Observable<List<HealthNewsItem>> listObservable = Observable.create(new Observable.OnSubscribe<List<HealthNewsItem>>() {
             @Override
@@ -39,20 +38,53 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
                         .findAll();
                 List<HealthNewsItem> results = realm.copyFromRealm(healthNewsItems);
                 if (results != null && results.size() > 0) {
+                    Log.i("notify", "local call:  " + " ---  isUiThread = " + isUiThread
+                            + " size = " + results.size());
+                    realm.close();
                     subscriber.onNext(results);
                 } else {
+                    Log.i("notify", "local call: null or size = 0 ");
                     Observable.empty();
+                    realm.close();
                 }
 
                 subscriber.onCompleted();
-                realm.close();
             }
-        }).subscribeOn(Schedulers.newThread());
+        });
         return listObservable;
     }
 
     @Override
-    public Observable buildHealthNewsDetailObservabler(long page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+    public Observable healthNewsDetailObservabler(long page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
         return null;
+    }
+
+    public void insertToDb(List<HealthNewsItem> healthNewsItems) {
+        if (healthNewsItems != null) {
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+
+            HealthNewsItem item = healthNewsItems.get(0);
+
+            HealthNewsItem realmObject = realm.createObject(HealthNewsItem.class);
+//            realmObject.setCount(item.getCount());
+            realmObject.setDescription(item.getDescription());
+            realmObject.setImg(item.getImg());
+            realmObject.setTitle(item.getTitle());
+            realmObject.setKeywords(item.getKeywords());
+            realmObject.setId((int) (item.getId() + System.currentTimeMillis()));
+//            realmObject.setKeyId(System.currentTimeMillis());
+
+            Log.e("notify", "insertToDb:  != null");
+//            realm.copyToRealmOrUpdate(realmObject);
+            realm.copyToRealmOrUpdate(healthNewsItems);
+//            realm.insertOrUpdate(healthNewsItems);
+//            for (int i = 0; i < healthNewsItems.size(); i++) {
+//                realm.insertOrUpdate(healthNewsItems.get(i));
+//                healthNewsItems.get(i);
+//            }
+            realm.commitTransaction();
+            realm.close();
+        }
     }
 }

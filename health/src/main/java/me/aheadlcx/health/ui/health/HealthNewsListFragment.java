@@ -1,5 +1,6 @@
 package me.aheadlcx.health.ui.health;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import me.aheadlcx.health.di.modules.ActivityModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
 import me.aheadlcx.health.model.HealthNewsItem;
 import me.aheadlcx.health.model.HealthNewsListResponse;
+import me.aheadlcx.health.test.TestListAct;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -66,6 +68,8 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
     protected void loadData() {
         mPresent.loadData("1");
     }
+
+
 
     @Override
     public void setData(List<HealthNewsItem> lists) {

@@ -29,9 +29,9 @@ public class MyApplication extends Application {
     }
 
     private void initDb() {
-        Realm.init(this);
-        RealmConfiguration configuration =new RealmConfiguration.Builder().build();
-        Realm.deleteRealm(configuration);
+//        Realm.init(this);
+        RealmConfiguration configuration =new RealmConfiguration.Builder(this).build();
+//        Realm.deleteRealm(configuration);
         Realm.setDefaultConfiguration(configuration);
     }
 

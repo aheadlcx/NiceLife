@@ -26,7 +26,7 @@ public class HealthNewsDetailCase extends Case {
     }
 
     @Override
-    public Observable buildHealthNewsDetailObservable(long id) {
-        return mRepository.buildHealthNewsDetailObservabler(id, getSubscribeOnScheduler(), getObserveOnScheduler());
+    public Observable caseDetailObservable(long id) {
+        return mRepository.healthNewsDetailObservabler(id, getSubscribeOnScheduler(), getObserveOnScheduler());
     }
 }

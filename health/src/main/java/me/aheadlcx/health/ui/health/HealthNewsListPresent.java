@@ -7,11 +7,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
+import me.aheadlcx.health.data.repository.HealthNewsDataRepository;
 import me.aheadlcx.health.di.Type;
 import me.aheadlcx.health.domain.interactor.Case;
 import me.aheadlcx.health.domain.interactor.DefaultSubscriber;
 import me.aheadlcx.health.model.HealthNewsItem;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Description:
@@ -27,6 +29,12 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
     private HealthNewslistContract.View mUi;
 
     @Inject
+    HealthNewsDataRepository mDataRepository;
+
+    public HealthNewsListPresent() {
+    }
+
+    @Inject
     public HealthNewsListPresent(@Type("list") Case aCase, Context context) {
         mCase = aCase;
         mContext = context;
@@ -40,7 +48,11 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
     @Override
     public void loadData(String page) {
         Log.i(TAG, "loadData: ");
-        mCase.execute(page, new HealthNewsListSubscriber());
+//        mCase.execute(page, new HealthNewsListSubscriber());
+        mDataRepository.healthNewsListObservabler(page, null, null)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread(), true)
+                .subscribe(new HealthNewsListSubscriber());
     }
 
 
@@ -56,13 +68,6 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
             if (mUi != null) {
                 mUi.setData(healthNewsItems);
             }
-            new Thread(){
-                @Override
-                public void run() {
-                    super.run();
-                    insertToDb(healthNewsItems);
-                }
-            }.start();
         }
 
         @Override
@@ -75,19 +80,6 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
         public void onCompleted() {
             Log.i(TAG, "onCompleted: ");
             super.onCompleted();
-        }
-    }
-
-    protected void insertToDb(List<HealthNewsItem> healthNewsItems){
-        if (healthNewsItems != null) {
-            Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            for (int i = 0; i < healthNewsItems.size(); i++) {
-                realm.insertOrUpdate(healthNewsItems.get(i));
-                healthNewsItems.get(i);
-            }
-            realm.commitTransaction();
-            realm.close();
         }
     }
 }

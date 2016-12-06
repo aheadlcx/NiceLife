@@ -11,7 +11,7 @@ import rx.Scheduler;
 
 public interface HealthNewsRepository {
 
-    Observable buildHealthNewsObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler);
-    Observable buildHealthNewsDetailObservabler(long page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler);
+    Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler);
+    Observable healthNewsDetailObservabler(long page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler);
 
 }

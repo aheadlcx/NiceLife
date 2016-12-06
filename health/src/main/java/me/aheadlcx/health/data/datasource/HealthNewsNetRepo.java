@@ -23,37 +23,29 @@ import rx.schedulers.Schedulers;
 
 public class HealthNewsNetRepo implements HealthNewsRepository {
     @Override
-    public Observable buildHealthNewsObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+    public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
         return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsList(page)
-                .map(new Func1<HealthNewsListResponse, List<HealthNewsItem>>() {
-                         @Override
-                         public List<HealthNewsItem> call(HealthNewsListResponse response) {
-                             long id = Thread.currentThread().getId();
-                             Log.i("notify", "net call: id = " + id);
-//                             if (response.getTngou() != null) {
-//                                 Realm realm = Realm.getDefaultInstance();
-//                                 realm.beginTransaction();
-//                                 for (int i = 0; i < response.getTngou().size(); i++) {
-////                                     realm.copyToRealm(response.getTngou().get(i));
-//                                     realm.insertOrUpdate(response.getTngou().get(i));
-//                                     response.getTngou().get(i);
-//                                 }
-//                                 realm.commitTransaction();
-//                                 realm.close();
-//                             }
-                             if (null != response) {
-                                 return response.getTngou();
-                             } else {
-                                 return null;
-                             }
-                         }
-                     }
-                ).subscribeOn(Schedulers.newThread());
-//                .subscribeOn(subscribeOnScheduler).observeOn(observeOnScheduler);
+                .flatMap(new Func1<HealthNewsListResponse, Observable<List<HealthNewsItem>>>() {
+                    @Override
+                    public Observable<List<HealthNewsItem>> call(HealthNewsListResponse response) {
+                                                     Log.i("notify", "net call: size = " +
+                                                             response.getTngou().size());
+                        return Observable.just(response.getTngou());
+                    }
+                });
+//                .map(new Func1<HealthNewsListResponse, List<HealthNewsItem>>() {
+//                         @Override
+//                         public List<HealthNewsItem> call(HealthNewsListResponse response) {
+//                             long id = Thread.currentThread().getId();
+//                             Log.i("notify", "net call: id = " + id);
+//                                 return response.getTngou();
+//                         }
+//                     }
+//                );
     }
 
     @Override
-    public Observable buildHealthNewsDetailObservabler(long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+    public Observable healthNewsDetailObservabler(long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
         return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsDetail(id)
                 .subscribeOn(subscribeOnScheduler).observeOn(observeOnScheduler);
     }

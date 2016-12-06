@@ -1,6 +1,9 @@
 package me.aheadlcx.health.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Description:
@@ -8,15 +11,26 @@ import io.realm.RealmObject;
  * Date:2016/11/27 下午9:03
  */
 public class HealthNewsItem extends RealmObject{
-    private int count;
-    private String description;
-    private int fcount;
+//    private long keyId;
+    @PrimaryKey
     private int id;
+    @SerializedName("count")
+    private int count;
+    @SerializedName("description")
+    private String description;
+    @SerializedName("fcount")
+    private int fcount;
+    @SerializedName("img")
     private String img;
+    @SerializedName("infoclass")
     private int infoclass;
+    @SerializedName("keywords")
     private String keywords;
+    @SerializedName("rcount")
     private int rcount;
+    @SerializedName("time")
     private long time;
+    @SerializedName("title")
     private String title;
 
     public int getCount() {
@@ -66,6 +80,15 @@ public class HealthNewsItem extends RealmObject{
     public void setInfoclass(int infoclass) {
         this.infoclass = infoclass;
     }
+
+//    public void setKeyId(long keyId) {
+//        this.keyId = keyId;
+//    }
+//
+//    public long getKeyId() {
+//
+//        return keyId;
+//    }
 
     public String getKeywords() {
         return keywords;
