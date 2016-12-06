@@ -2,6 +2,8 @@ package me.aheadlcx.health.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -10,7 +12,7 @@ import io.realm.annotations.PrimaryKey;
  * Creator: aheadlcx
  * Date:2016/11/27 下午9:03
  */
-public class HealthNewsItem extends RealmObject{
+public class HealthNewsItem extends RealmObject implements Serializable{
 //    private long keyId;
     @PrimaryKey
     private int id;
@@ -120,5 +122,9 @@ public class HealthNewsItem extends RealmObject{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setTest(String test){
+        this.description = test;
     }
 }

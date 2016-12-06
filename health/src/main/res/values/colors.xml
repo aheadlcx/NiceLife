@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 通用灰色背景-->
+    <color name="app_color_gray">#f5f5f5</color>
+    <!-- 分割线-->
+    <color name="app_color_gray_light">#e4e4e4</color>
+
+
+    <color name="white_item">#ffffff</color>
+
     <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="black">#000000</color>
+    <color name="red">#c93437</color>
+    <color name="blue">#375bf1</color>
+    <color name="yellow">#f7d23e</color>
+    <color name="green">#34a350</color>
 </resources>

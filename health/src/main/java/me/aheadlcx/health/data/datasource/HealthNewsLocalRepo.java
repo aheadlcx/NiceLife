@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 import me.aheadlcx.health.MyApplication;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
@@ -34,10 +35,13 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
         Observable<List<HealthNewsItem>> listObservable = Observable.create(new Observable.OnSubscribe<List<HealthNewsItem>>() {
             @Override
             public void call(Subscriber<? super List<HealthNewsItem>> subscriber) {
+                boolean isUi = Looper.getMainLooper() == Looper.myLooper();
+                Log.i(TAG, "call: isUi = " + isUi);
                 Realm realm = Realm.getDefaultInstance();
                 RealmResults<HealthNewsItem> healthNewsItems = realm.where(HealthNewsItem.class)
                         .findAll();
                 List<HealthNewsItem> results = realm.copyFromRealm(healthNewsItems);
+
                 if (results != null && results.size() > 0) {
                     Log.i("notify", "local call:  " + " ---  isUiThread = " + isUiThread
                             + " size = " + results.size());
@@ -51,7 +55,7 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
 
                 subscriber.onCompleted();
             }
-        });
+        }).subscribeOn(Schedulers.io());
         return listObservable;
     }
 
@@ -66,27 +70,19 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
             realm.beginTransaction();
 
             HealthNewsItem item = healthNewsItems.get(0);
-
-            HealthNewsItem realmObject = realm.createObject(HealthNewsItem.class);
-//            realmObject.setCount(item.getCount());
-            realmObject.setDescription(item.getDescription());
-            realmObject.setImg(item.getImg());
-            realmObject.setTitle(item.getTitle());
-            realmObject.setKeywords(item.getKeywords());
-            realmObject.setId((int) (item.getId() + System.currentTimeMillis()));
-//            realmObject.setKeyId(System.currentTimeMillis());
-
             Log.e("notify", "insertToDb:  != null");
-//            realm.copyToRealmOrUpdate(realmObject);
             realm.copyToRealmOrUpdate(healthNewsItems);
-//            realm.insertOrUpdate(healthNewsItems);
-//            for (int i = 0; i < healthNewsItems.size(); i++) {
-//                realm.insertOrUpdate(healthNewsItems.get(i));
-//                healthNewsItems.get(i);
-//            }
             realm.commitTransaction();
             realm.close();
         }
+    }
+
+    public void delete(){
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.delete(HealthNewsItem.class);
+        realm.commitTransaction();
+        realm.close();;
     }
 
     public void insertDetail(HealthNewsDetailResponse response) {

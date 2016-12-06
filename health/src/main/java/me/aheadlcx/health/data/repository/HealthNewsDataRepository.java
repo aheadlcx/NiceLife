@@ -52,6 +52,7 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
                 .doOnNext(new Action1<List<HealthNewsItem>>() {
                     @Override
                     public void call(List<HealthNewsItem> data) {
+                        mLocalRepo.delete();
                         mLocalRepo.insertToDb(data);
                     }
                 });

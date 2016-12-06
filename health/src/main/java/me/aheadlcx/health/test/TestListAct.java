@@ -10,7 +10,9 @@ import android.view.View;
 
 import java.util.List;
 
+import io.realm.DynamicRealm;
 import io.realm.Realm;
+import io.realm.RealmMigration;
 import io.realm.RealmResults;
 import me.aheadlcx.health.R;
 import me.aheadlcx.health.base.BaseActivity;
@@ -102,5 +104,15 @@ public class TestListAct extends BaseActivity {
             String content = fromRealm.getContent();
             Log.i(TAG, "getPageDb: content = " + content);
         }
+    }
+
+    public void test(){
+        new RealmMigration(){
+
+            @Override
+            public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+
+            }
+        };
     }
 }

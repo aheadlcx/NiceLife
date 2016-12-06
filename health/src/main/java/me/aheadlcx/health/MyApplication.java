@@ -8,6 +8,7 @@ import me.aheadlcx.health.di.components.ApplicationComponent;
 import me.aheadlcx.health.di.components.DaggerApplicationComponent;
 import me.aheadlcx.health.di.components.TestComponent;
 import me.aheadlcx.health.di.modules.ApplicationModule;
+import me.aheadlcx.health.util.HealthSdk;
 
 /**
  * Description:
@@ -21,6 +22,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        HealthSdk.initHealth(this);
         instance = this;
          applicationComponent= DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this))
                 .build();

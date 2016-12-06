@@ -16,6 +16,7 @@ import java.util.List;
 import me.aheadlcx.health.R;
 import me.aheadlcx.health.api.ApiConstant;
 import me.aheadlcx.health.model.HealthNewsItem;
+import me.aheadlcx.health.test.TestModel;
 import me.aheadlcx.health.ui.health.detail.HealthNewsDetailActivity;
 
 /**
@@ -59,8 +60,13 @@ public class HealthNewsAdapter extends RecyclerView.Adapter<HealthNewsAdapter.VH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                mList.get(position).setTest("after click");
                 Intent intent = new Intent(mContext, HealthNewsDetailActivity.class);
                 intent.putExtra("id", ((long) (mList.get(position).getId())));
+                TestModel model = new TestModel();
+                model.name = "haha";
+                model.mList = HealthNewsAdapter.this.mList;
+                intent.putExtra("test", model);
                 mContext.startActivity(intent);
             }
         });
