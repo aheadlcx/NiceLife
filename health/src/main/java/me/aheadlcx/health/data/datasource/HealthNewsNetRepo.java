@@ -39,7 +39,7 @@ public class HealthNewsNetRepo implements HealthNewsRepository {
     @Override
     public Observable healthNewsDetailObservabler(long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
         Log.i(TAG, "healthNewsDetailObservabler: ");
-        return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsDetail(id)
-                .subscribeOn(subscribeOnScheduler).observeOn(observeOnScheduler);
+        return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsDetail(id);
+//                .subscribeOn(subscribeOnScheduler).observeOn(observeOnScheduler);
     }
 }

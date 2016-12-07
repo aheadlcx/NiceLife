@@ -81,7 +81,13 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
                     }
                 });
 
-        Observable<HealthNewsDetailResponse> local = mLocalRepo.getDetail(id);
+        Observable<HealthNewsDetailResponse> local = mLocalRepo.getDetail(id)
+                .doOnNext(new Action1<HealthNewsDetailResponse>() {
+                    @Override
+                    public void call(HealthNewsDetailResponse response) {
+                        detailResp.put(id, response);
+                    }
+                });
 
         return Observable.concat(local, net);
     }

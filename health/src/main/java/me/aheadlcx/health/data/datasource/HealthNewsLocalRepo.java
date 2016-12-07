@@ -36,7 +36,7 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
             @Override
             public void call(Subscriber<? super List<HealthNewsItem>> subscriber) {
                 boolean isUi = Looper.getMainLooper() == Looper.myLooper();
-                Log.i(TAG, "call: isUi = " + isUi);
+                Log.i(TAG, "healthNewsListObservabler call: isUi = " + isUi);
                 Realm realm = Realm.getDefaultInstance();
                 RealmResults<HealthNewsItem> healthNewsItems = realm.where(HealthNewsItem.class)
                         .findAll();
@@ -101,14 +101,20 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
         return Observable.create(new Observable.OnSubscribe<HealthNewsDetailResponse>() {
             @Override
             public void call(Subscriber<? super HealthNewsDetailResponse> subscriber) {
-                Log.i(TAG, "call: getDetail");
+                boolean isUi = Looper.getMainLooper() == Looper.myLooper();
+                Log.i(TAG, "getDetail call: isUi = " + isUi);
                 Realm realm = Realm.getDefaultInstance();
                 HealthNewsDetailResponse detailResponse = realm.where(HealthNewsDetailResponse.class).equalTo("id", id).findFirst();
+                if (detailResponse == null) {
+                    subscriber.onCompleted();
+                    return;
+                }
+                HealthNewsDetailResponse result = realm.copyFromRealm(detailResponse);
+                realm.close();
                 if (detailResponse != null) {
-                    subscriber.onNext(detailResponse);
+                    subscriber.onNext(result);
                 }
                 subscriber.onCompleted();
-                realm.close();
             }
         }).subscribeOn(Schedulers.io());
     }

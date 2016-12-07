@@ -58,7 +58,7 @@ public class HealthTest {
         Log.i(TAG, "testHealthNewsList: " + json);
     }
 
-    @Test
+//    @Test
     public void testInt() {
         int a = 0;
         int b = 1;
@@ -74,6 +74,21 @@ public class HealthTest {
         int ab = 0x0004;
         boolean b2 = (aa & ab) != 0;
         Log.i(TAG, "testInt: b2 = " +  b2);
+
+    }
+
+    @Test
+    public void testA(){
+        int a = 4;
+        for (int i = 0; i < 3; i++) {
+            Log.i(TAG, "testA: i = " + i);
+            if (a == i){
+                a = 5;
+                break;
+            }
+        }
+        assertTrue(a == 5);
+
 
     }
 }

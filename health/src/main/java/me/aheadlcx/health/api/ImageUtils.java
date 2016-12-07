@@ -9,6 +9,6 @@ package me.aheadlcx.health.api;
 public class ImageUtils {
 
     public static String getImageUrl(String partUrl){
-        return ApiConstant.base_img_url_params + partUrl;
+        return ApiConstant.base_img_url + partUrl;
     }
 }

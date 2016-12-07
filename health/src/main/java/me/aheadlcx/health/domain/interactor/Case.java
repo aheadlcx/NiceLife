@@ -55,6 +55,7 @@ public abstract class Case {
 
     public void execute(long id, Subscriber subscriber) {
         mSubscription = this.caseDetailObservable(id)
+                .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(subscriber);
         connect();
     }
