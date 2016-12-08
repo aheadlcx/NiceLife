@@ -25,7 +25,8 @@ public class HealthNewsNetRepo implements HealthNewsRepository {
     private static final String TAG = "notify";
     @Override
     public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
-        return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsList(page)
+        return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsList(page,
+                "5")
                 .flatMap(new Func1<HealthNewsListResponse, Observable<List<HealthNewsItem>>>() {
                     @Override
                     public Observable<List<HealthNewsItem>> call(HealthNewsListResponse response) {

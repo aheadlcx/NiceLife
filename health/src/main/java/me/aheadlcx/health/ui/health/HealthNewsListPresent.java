@@ -27,7 +27,7 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
     private Context mContext;
     private Case mCase;
     private HealthNewslistContract.View mUi;
-
+    private boolean isLoadMore = false;
     @Inject
     HealthNewsDataRepository mDataRepository;
 
@@ -46,13 +46,28 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
     }
 
     @Override
+    public void loadFirst(String page) {
+        Log.i(TAG, "loadFirst: ");
+        isLoadMore = false;
+        loadData(page);
+    }
+
+    @Override
     public void loadData(String page) {
-        Log.i(TAG, "loadData: ");
-//        mCase.execute(page, new HealthNewsListSubscriber());
         mDataRepository.healthNewsListObservabler(page, null, null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(new HealthNewsListSubscriber());
+    }
+
+    public boolean isLoadMore() {
+        return isLoadMore;
+    }
+
+    @Override
+    public void loadMoreData(String page) {
+        isLoadMore = true;
+        loadData(page);
     }
 
 
@@ -65,9 +80,15 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
             }
             Log.i(TAG, "onNext: size " + size);
             super.onNext(healthNewsItems);
-            if (mUi != null) {
+            if (mUi == null) {
+                return;
+            }
+            if (isLoadMore()) {
+                mUi.addData(healthNewsItems);
+            }else {
                 mUi.setData(healthNewsItems);
             }
+
         }
 
         @Override

@@ -13,10 +13,13 @@ import me.aheadlcx.health.model.HealthNewsItem;
 public interface HealthNewslistContract {
     interface View {
         void setData(List<HealthNewsItem> lists);
+        void addData(List<HealthNewsItem> lists);
     }
 
     interface Present {
+        void loadFirst(String page);
         void loadData(String page);
+        void loadMoreData(String page);
 
         public HealthNewsListPresent setUi(HealthNewslistContract.View ui);
 

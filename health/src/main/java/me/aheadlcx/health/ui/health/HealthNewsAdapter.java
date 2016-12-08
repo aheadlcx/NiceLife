@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.aheadlcx.health.R;
@@ -33,6 +34,14 @@ public class HealthNewsAdapter extends RecyclerView.Adapter<HealthNewsAdapter.VH
     public HealthNewsAdapter(List<HealthNewsItem> list, Context context) {
         mList = list;
         mContext = context;
+    }
+
+    public void addData(List<HealthNewsItem> data){
+        if (mList == null) {
+            mList = new ArrayList<>();
+        }
+        mList.addAll(data);
+        notifyDataSetChanged();
     }
 
     public HealthNewsAdapter setList(List<HealthNewsItem> list) {

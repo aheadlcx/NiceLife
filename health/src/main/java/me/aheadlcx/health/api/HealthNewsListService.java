@@ -16,7 +16,8 @@ import rx.Observable;
 public interface HealthNewsListService {
 
     @GET("api/info/list")
-    Observable<HealthNewsListResponse> getHealthNewsList(@Query("page") String page);
+    Observable<HealthNewsListResponse> getHealthNewsList(@Query("page") String page, @Query
+            ("rows") String rows);
 
     @GET("api/info/list")
     Call<HealthNewsListResponse> getHealthNewsListSync();
