@@ -53,7 +53,7 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
                     @Override
                     public void call(List<HealthNewsItem> data) {
                         //目前加载速度很快，先不担心分页加载的事情
-//                        mLocalRepo.insertToDb(data);
+                        mLocalRepo.insertToDb(data);
                     }
                 });
         return Observable.concat(localObservale, netObservale);

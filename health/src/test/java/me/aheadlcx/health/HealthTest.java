@@ -1,6 +1,7 @@
 package me.aheadlcx.health;
 
 
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -79,15 +80,10 @@ public class HealthTest {
 
     @Test
     public void testA(){
-        int a = 4;
-        for (int i = 0; i < 3; i++) {
-            Log.i(TAG, "testA: i = " + i);
-            if (a == i){
-                a = 5;
-                break;
-            }
-        }
-        assertTrue(a == 5);
+        ArrayMap<Double, Double> map = new ArrayMap<>();
+        map.put(1d, 2d);
+        Double aDouble = map.get(2d);
+        assertTrue(aDouble == null);
 
 
     }
