@@ -25,7 +25,7 @@ public class HealthNewsItem extends RealmObject implements Serializable{
     @SerializedName("img")
     private String img;
     @SerializedName("infoclass")
-    private int infoclass;
+    private int infoclass;//2 就是健康咨询
     @SerializedName("keywords")
     private String keywords;
     @SerializedName("rcount")
@@ -34,6 +34,9 @@ public class HealthNewsItem extends RealmObject implements Serializable{
     private long time;
     @SerializedName("title")
     private String title;
+
+    private int loreclass;//3 就是健康知识
+    private int askclass;//2 就是健康问答列表
 
     public int getCount() {
         return count;

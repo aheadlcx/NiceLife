@@ -15,13 +15,22 @@ import rx.Observable;
  */
 public interface HealthNewsListService {
 
-    @GET("api/info/list")
+//    @GET("api/info/list")
+    @GET("api/lore/list")
     Observable<HealthNewsListResponse> getHealthNewsList(@Query("page") String page, @Query
             ("rows") String rows);
 
     @GET("api/info/list")
     Call<HealthNewsListResponse> getHealthNewsListSync();
 
-    @GET("api/info/show")
+//    @GET("api/info/show")
+    @GET("api/lore/show")
     Observable<HealthNewsDetailResponse> getHealthNewsDetail(@Query("id") long id);
+
+    @GET("api/lore/list")
+    Observable<HealthNewsListResponse> getHealthLoreList(@Query("page") String page, @Query
+            ("rows") String rows);
+
+    @GET("api/lore/show")
+    Observable<HealthNewsDetailResponse> getHealthLoreDetail(@Query("id") long id);
 }
