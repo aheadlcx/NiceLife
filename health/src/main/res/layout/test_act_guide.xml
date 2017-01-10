@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/app_color_gray"
             android:orientation="vertical">
 
     <LinearLayout
@@ -14,15 +15,19 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="center"
+            android:background="@color/white"
             android:text="txtMain"
+            android:layout_margin="5dp"
             android:textColor="#111111"
             android:textSize="18dp"/>
 
         <TextView
             android:id="@+id/txtTest"
+            android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="center"
+            android:background="@color/white"
             android:text="txtTest"
             android:textColor="#111111"
             android:textSize="18dp"/>
@@ -31,6 +36,8 @@
             android:id="@+id/txtTestSync"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_margin="5dp"
+            android:background="@color/white"
             android:gravity="center"
             android:text="txtTestSync"
             android:textColor="#111111"
