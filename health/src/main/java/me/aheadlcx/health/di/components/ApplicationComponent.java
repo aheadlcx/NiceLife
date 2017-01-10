@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import me.aheadlcx.health.base.BaseActivity;
 import me.aheadlcx.health.di.modules.ApplicationModule;
+import me.aheadlcx.health.di.modules.HealthNewsModule;
 import me.aheadlcx.health.domain.executor.PostExecutionThread;
 import me.aheadlcx.health.domain.executor.ThreadExecutor;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
@@ -28,5 +29,6 @@ public interface ApplicationComponent {
     PostExecutionThread postExecutionThread();
 
     HealthNewsRepository provideHealthNewsRepo();
+//    HealthNewsComponents plus(HealthNewsModule HealthNewsModule);
 
 }

@@ -20,7 +20,7 @@ public class HealthNewsDetailCase extends Case {
 
     @Inject
     public HealthNewsDetailCase(HealthNewsRepository repository, PostExecutionThread
-            postExecutionThread, ThreadExecutor threadExecutor, TestDi testDi) {
+            postExecutionThread, ThreadExecutor threadExecutor) {
         super(postExecutionThread, threadExecutor);
         mRepository = repository;
     }

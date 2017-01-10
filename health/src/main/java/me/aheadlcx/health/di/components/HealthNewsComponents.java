@@ -16,8 +16,8 @@ import me.aheadlcx.health.ui.health.detail.HealthNewsDetailFragment;
  */
 @PerActivity
 @Component(dependencies = {ApplicationComponent.class}, modules =
-        {ActivityModule.class, HealthNewsModule.class, TestModule.class})
-public interface HealthNewsComponents extends ActivityComponent {
+        {ActivityModule.class, HealthNewsModule.class})
+public interface HealthNewsComponents extends ActivityComponent{
     void inject(HealthNewsListFragment healthNewsListFragment);
 
     void inject(HealthNewsDetailFragment healthNewsDetailFragment);
