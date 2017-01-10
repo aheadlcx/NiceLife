@@ -38,6 +38,27 @@ public class HealthNewsItem extends RealmObject implements Serializable{
     private int loreclass;//3 就是健康知识
     private int askclass;//2 就是健康问答列表
 
+    public HealthNewsItem setLoreclass(int loreclass) {
+        this.loreclass = loreclass;
+        return this;
+    }
+
+    public HealthNewsItem setAskclass(int askclass) {
+
+        this.askclass = askclass;
+        return this;
+    }
+
+    public int getLoreclass() {
+
+        return loreclass;
+    }
+
+    public int getAskclass() {
+
+        return askclass;
+    }
+
     public int getCount() {
         return count;
     }

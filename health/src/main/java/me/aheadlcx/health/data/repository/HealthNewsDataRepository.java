@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
+import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.data.datasource.HealthNewsLocalRepo;
 import me.aheadlcx.health.data.datasource.HealthNewsNetRepo;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
@@ -44,11 +44,12 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
     }
 
     @Override
-    public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+    public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler,
+                                                Scheduler observeOnScheduler, @HealthType int healthType) {
         final Observable localObservale = mLocalRepo.healthNewsListObservabler(page,
-                subscribeOnScheduler, observeOnScheduler);
+                subscribeOnScheduler, observeOnScheduler, healthType);
         final Observable netObservale = mNetRepo
-                .healthNewsListObservabler(page, subscribeOnScheduler, observeOnScheduler)
+                .healthNewsListObservabler(page, subscribeOnScheduler, observeOnScheduler, healthType)
                 .doOnNext(new Action1<List<HealthNewsItem>>() {
                     @Override
                     public void call(List<HealthNewsItem> data) {

@@ -1,5 +1,6 @@
 package me.aheadlcx.health.domain.repository;
 
+import me.aheadlcx.health.constant.HealthType;
 import rx.Observable;
 import rx.Scheduler;
 
@@ -11,7 +12,8 @@ import rx.Scheduler;
 
 public interface HealthNewsRepository {
 
-    Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler);
+    Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler
+            observeOnScheduler, @HealthType int healthType);
     Observable healthNewsDetailObservabler(long page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler);
 
 }

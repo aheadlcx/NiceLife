@@ -11,6 +11,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 import me.aheadlcx.health.MyApplication;
+import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
 import me.aheadlcx.health.model.HealthNewsDetailResponse;
 import me.aheadlcx.health.model.HealthNewsItem;
@@ -29,7 +30,8 @@ import rx.schedulers.Schedulers;
 public class HealthNewsLocalRepo implements HealthNewsRepository {
     private static final String TAG = "notify";
     @Override
-    public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+    public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler,
+                                                Scheduler observeOnScheduler, @HealthType final int healthType) {
         final boolean isUiThread = Looper.getMainLooper() == Looper.myLooper();
 
         Observable<List<HealthNewsItem>> listObservable = Observable.create(new Observable.OnSubscribe<List<HealthNewsItem>>() {
@@ -38,8 +40,9 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
                 boolean isUi = Looper.getMainLooper() == Looper.myLooper();
                 Log.i(TAG, "healthNewsListObservabler call: isUi = " + isUi);
                 Realm realm = Realm.getDefaultInstance();
-                RealmResults<HealthNewsItem> healthNewsItems = realm.where(HealthNewsItem.class)
-                        .findAll();
+                RealmResults<HealthNewsItem> healthNewsItems = null;
+                healthNewsItems = getRealByType(realm, healthType);
+
                 List<HealthNewsItem> results = realm.copyFromRealm(healthNewsItems);
 
                 if (results != null && results.size() > 0) {
@@ -57,6 +60,24 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
             }
         }).subscribeOn(Schedulers.io());
         return listObservable;
+    }
+
+    private RealmResults<HealthNewsItem> getRealByType(Realm realm, @HealthType int healthType){
+        RealmResults<HealthNewsItem> healthNewsItems = null;
+        switch(healthType){
+            case HealthType.TYPE_INFO:
+            healthNewsItems = realm.where(HealthNewsItem.class)
+                    .between("infoclass", 1, Integer.MAX_VALUE)
+                    .findAll();
+            break;
+            case HealthType.TYPE_LORE:
+                healthNewsItems = realm.where(HealthNewsItem.class)
+                        .between("loreclass", 1, Integer.MAX_VALUE)
+                        .findAll();
+                break;
+        }
+
+        return healthNewsItems;
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import me.aheadlcx.health.R;
 import me.aheadlcx.health.base.BaseActivity;
+import me.aheadlcx.health.constant.IntentKey;
 
 /**
  * Description:
@@ -16,7 +17,11 @@ public class HealthNewsListAct extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new
-                HealthNewsListFragment()).commit();
+        HealthNewsListFragment fragment = new HealthNewsListFragment();
+        int type = getIntent().getIntExtra(IntentKey.HEALTH_TYPE, -1);
+        if (type > 0){
+            fragment.getArguments().putInt(IntentKey.HEALTH_TYPE, type);
+        }
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment).commit();
     }
 }

@@ -4,7 +4,6 @@ import android.util.Log;
 
 import java.util.List;
 
-import io.realm.Realm;
 import me.aheadlcx.health.api.ApiUtils;
 import me.aheadlcx.health.api.HealthNewsListService;
 import me.aheadlcx.health.constant.HealthType;
@@ -14,26 +13,25 @@ import me.aheadlcx.health.model.HealthNewsListResponse;
 import rx.Observable;
 import rx.Scheduler;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
- * Description: 健康资讯
- * Creator: aheadlcx
- * Date:2016/11/28 上午9:57
+ * Description:
+ * author: aheadlcx
+ * Date:2017/1/10 下午4:30
  */
 
-public class HealthNewsNetRepo implements HealthNewsRepository {
-    private static final String TAG = "notify";
+public class HealthKnowLoreRepo implements HealthNewsRepository {
+    private static final String TAG = "HealthKnowLoreRepo";
     @Override
     public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler,
                                                 Scheduler observeOnScheduler, @HealthType int healthType) {
-        return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsList(page,
+        return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthLoreList(page,
                 "5")
                 .flatMap(new Func1<HealthNewsListResponse, Observable<List<HealthNewsItem>>>() {
                     @Override
                     public Observable<List<HealthNewsItem>> call(HealthNewsListResponse response) {
-                                                     Log.i("notify", "net call: size = " +
-                                                             response.getTngou().size());
+                        Log.i("notify", "net call: size = " +
+                                response.getTngou().size());
                         return Observable.just(response.getTngou());
                     }
                 });
@@ -41,8 +39,6 @@ public class HealthNewsNetRepo implements HealthNewsRepository {
 
     @Override
     public Observable healthNewsDetailObservabler(long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
-        Log.i(TAG, "healthNewsDetailObservabler: ");
-        return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthNewsDetail(id);
-//                .subscribeOn(subscribeOnScheduler).observeOn(observeOnScheduler);
+        return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthLoreDetail(id);
     }
 }
