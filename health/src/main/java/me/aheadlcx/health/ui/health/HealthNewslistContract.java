@@ -2,6 +2,7 @@ package me.aheadlcx.health.ui.health;
 
 import java.util.List;
 
+import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.model.HealthNewsItem;
 
 /**
@@ -18,7 +19,7 @@ public interface HealthNewslistContract {
 
     interface Present {
         void loadFirst(String page);
-        void loadData(String page);
+        void loadData(String page, @HealthType final int healthType);
         void loadMoreData(String page);
 
         public HealthNewsListPresent setUi(HealthNewslistContract.View ui);

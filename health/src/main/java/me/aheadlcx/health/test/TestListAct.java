@@ -16,6 +16,7 @@ import io.realm.RealmMigration;
 import io.realm.RealmResults;
 import me.aheadlcx.health.R;
 import me.aheadlcx.health.base.BaseActivity;
+import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.data.datasource.HealthNewsLocalRepo;
 import me.aheadlcx.health.model.HealthNewsItem;
 import me.aheadlcx.health.ui.health.HealthNewsAdapter;
@@ -62,7 +63,7 @@ public class TestListAct extends BaseActivity {
 
     private void testDb() {
         HealthNewsLocalRepo repo = new HealthNewsLocalRepo();
-        repo.healthNewsListObservabler("1", null, null)
+        repo.healthNewsListObservabler("1", null, null, HealthType.TYPE_INFO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<HealthNewsItem>>() {

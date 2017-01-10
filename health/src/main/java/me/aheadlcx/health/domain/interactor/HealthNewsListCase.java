@@ -2,6 +2,7 @@ package me.aheadlcx.health.domain.interactor;
 
 import javax.inject.Inject;
 
+import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.data.repository.HealthNewsDataRepository;
 import me.aheadlcx.health.di.test.TestDi;
 import me.aheadlcx.health.domain.executor.PostExecutionThread;
@@ -26,8 +27,9 @@ public class HealthNewsListCase extends Case {
     }
 
     @Override
-    public Observable caseListObservable(String page) {
-        return mRepository.healthNewsListObservabler(page, getSubscribeOnScheduler(), getObserveOnScheduler());
+    public Observable caseListObservable(String page, @HealthType final int healthType) {
+        return mRepository.healthNewsListObservabler(page, getSubscribeOnScheduler(),
+                getObserveOnScheduler(), healthType);
     }
 
     @Override

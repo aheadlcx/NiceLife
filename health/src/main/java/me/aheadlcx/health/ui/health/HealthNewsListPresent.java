@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.data.repository.HealthNewsDataRepository;
 import me.aheadlcx.health.di.Type;
 import me.aheadlcx.health.domain.interactor.Case;
@@ -49,12 +50,16 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
     public void loadFirst(String page) {
         Log.i(TAG, "loadFirst: ");
         isLoadMore = false;
-        loadData(page);
+        loadData(page, getHealthType());
+    }
+
+    private int getHealthType(){
+        return HealthType.TYPE_INFO;
     }
 
     @Override
-    public void loadData(String page) {
-        mDataRepository.healthNewsListObservabler(page, null, null)
+    public void loadData(String page, @HealthType final int healthType) {
+        mDataRepository.healthNewsListObservabler(page, null, null, healthType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(new HealthNewsListSubscriber());
@@ -67,7 +72,7 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
     @Override
     public void loadMoreData(String page) {
         isLoadMore = true;
-        loadData(page);
+        loadData(page, getHealthType());
     }
 
 

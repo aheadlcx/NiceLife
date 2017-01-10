@@ -1,5 +1,6 @@
 package me.aheadlcx.health.domain.interactor;
 
+import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.domain.executor.PostExecutionThread;
 import me.aheadlcx.health.domain.executor.ThreadExecutor;
 import rx.Observable;
@@ -28,7 +29,7 @@ public abstract class Case {
         mThreadExecutor = threadExecutor;
     }
 
-    public Observable caseListObservable(String page) {
+    public Observable caseListObservable(String page, @HealthType final int healthType) {
         return null;
     }
 
@@ -38,11 +39,11 @@ public abstract class Case {
 
 
     public void execute(String page, Subscriber subscriber) {
-        mSubscription = this.caseListObservable(page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread(), true)
-                .subscribe(subscriber);
-        connect();
+//        mSubscription = this.caseListObservable(page)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread(), true)
+//                .subscribe(subscriber);
+//        connect();
     }
 
     public Scheduler getSubscribeOnScheduler() {
