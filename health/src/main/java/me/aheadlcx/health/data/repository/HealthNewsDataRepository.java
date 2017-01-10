@@ -45,11 +45,11 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
 
     @Override
     public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler,
-                                                Scheduler observeOnScheduler, @HealthType int healthType) {
-        final Observable localObservale = mLocalRepo.healthNewsListObservabler(page,
-                subscribeOnScheduler, observeOnScheduler, healthType);
+                                                Scheduler observeOnScheduler, @HealthType int
+                                                        healthType, boolean isLoadMore) {
         final Observable netObservale = mNetRepo
-                .healthNewsListObservabler(page, subscribeOnScheduler, observeOnScheduler, healthType)
+                .healthNewsListObservabler(page, subscribeOnScheduler, observeOnScheduler,
+                        healthType, isLoadMore)
                 .doOnNext(new Action1<List<HealthNewsItem>>() {
                     @Override
                     public void call(List<HealthNewsItem> data) {
@@ -57,6 +57,11 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
                         mLocalRepo.insertToDb(data);
                     }
                 });
+        if (isLoadMore) {
+            return netObservale;
+        }
+        final Observable localObservale = mLocalRepo.healthNewsListObservabler(page,
+                subscribeOnScheduler, observeOnScheduler, healthType, isLoadMore);
         return Observable.concat(localObservale, netObservale);
     }
 

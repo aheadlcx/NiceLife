@@ -59,7 +59,7 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
 
     @Override
     public void loadData(String page, @HealthType final int healthType) {
-        mDataRepository.healthNewsListObservabler(page, null, null, healthType)
+        mDataRepository.healthNewsListObservabler(page, null, null, healthType, isLoadMore())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(new HealthNewsListSubscriber());
@@ -83,7 +83,7 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
             if (null != healthNewsItems) {
                 size = healthNewsItems.size();
             }
-            Log.i(TAG, "onNext: size " + size);
+            Log.i("OkHttp", "onNext: ==============       size " + size);
             super.onNext(healthNewsItems);
             if (mUi == null) {
                 return;

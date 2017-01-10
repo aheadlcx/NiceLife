@@ -29,7 +29,7 @@ public abstract class Case {
         mThreadExecutor = threadExecutor;
     }
 
-    public Observable caseListObservable(String page, @HealthType final int healthType) {
+    public Observable caseListObservable(String page, @HealthType final int healthType, boolean isLoadMore) {
         return null;
     }
 

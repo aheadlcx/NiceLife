@@ -27,9 +27,9 @@ public class HealthNewsListCase extends Case {
     }
 
     @Override
-    public Observable caseListObservable(String page, @HealthType final int healthType) {
+    public Observable caseListObservable(String page, @HealthType final int healthType, boolean isLoadMore) {
         return mRepository.healthNewsListObservabler(page, getSubscribeOnScheduler(),
-                getObserveOnScheduler(), healthType);
+                getObserveOnScheduler(), healthType, isLoadMore);
     }
 
     @Override

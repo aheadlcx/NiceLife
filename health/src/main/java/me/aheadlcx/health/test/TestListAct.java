@@ -63,7 +63,7 @@ public class TestListAct extends BaseActivity {
 
     private void testDb() {
         HealthNewsLocalRepo repo = new HealthNewsLocalRepo();
-        repo.healthNewsListObservabler("1", null, null, HealthType.TYPE_INFO)
+        repo.healthNewsListObservabler("1", null, null, HealthType.TYPE_INFO, false)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<HealthNewsItem>>() {

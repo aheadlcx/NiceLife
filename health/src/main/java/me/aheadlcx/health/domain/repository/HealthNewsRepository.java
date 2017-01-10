@@ -13,7 +13,7 @@ import rx.Scheduler;
 public interface HealthNewsRepository {
 
     Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler, Scheduler
-            observeOnScheduler, @HealthType int healthType);
+            observeOnScheduler, @HealthType int healthType, boolean isLoadMore);
     Observable healthNewsDetailObservabler(long page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler);
 
 }

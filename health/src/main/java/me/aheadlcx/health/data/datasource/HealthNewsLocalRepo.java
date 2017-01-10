@@ -31,7 +31,8 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
     private static final String TAG = "notify";
     @Override
     public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler,
-                                                Scheduler observeOnScheduler, @HealthType final int healthType) {
+                                                Scheduler observeOnScheduler, @HealthType final
+                                                    int healthType, boolean isLoadMore) {
         final boolean isUiThread = Looper.getMainLooper() == Looper.myLooper();
 
         Observable<List<HealthNewsItem>> listObservable = Observable.create(new Observable.OnSubscribe<List<HealthNewsItem>>() {

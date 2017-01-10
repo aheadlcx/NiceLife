@@ -24,7 +24,8 @@ public class HealthKnowLoreRepo implements HealthNewsRepository {
     private static final String TAG = "HealthKnowLoreRepo";
     @Override
     public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler,
-                                                Scheduler observeOnScheduler, @HealthType int healthType) {
+                                                Scheduler observeOnScheduler, @HealthType int
+                                                            healthType, boolean isLoadMore) {
         return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthLoreList(page,
                 "5")
                 .flatMap(new Func1<HealthNewsListResponse, Observable<List<HealthNewsItem>>>() {
