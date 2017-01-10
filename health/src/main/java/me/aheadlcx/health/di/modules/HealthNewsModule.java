@@ -21,27 +21,28 @@ import me.aheadlcx.health.ui.health.HealthNewslistContract;
  */
 @Module
 public class HealthNewsModule {
-
-    @Type("list")
-    @Provides
-    @PerActivity
-    public Case provideHealthNewsList(HealthNewsListCase healthNewsListCase){
-        return healthNewsListCase;
+    public HealthNewsModule() {
     }
+//        @Type("list")
+//    @Provides
+//    @PerActivity
+//    public Case provideHealthNewsList(HealthNewsListCase healthNewsListCase){
+//        return healthNewsListCase;
+//    }
+//
+//    @PerActivity
+//    @Provides
+//    public HealthNewslistContract.Present providePrensent(HealthNewsListPresent present){
+//        return present;
+//    }
 
-    @PerActivity
-    @Provides
-    public HealthNewslistContract.Present providePrensent(HealthNewsListPresent present){
-        return present;
-    }
 
-
-    @Type("detail")
-    @Provides
-    @PerActivity
-    public Case provideHealthNewsDetailCase(HealthNewsDetailCase healthNewsDetailCase){
-        return healthNewsDetailCase;
-    }
+//    @Type("detail")
+//    @Provides
+//    @PerActivity
+//    public Case provideHealthNewsDetailCase(HealthNewsDetailCase healthNewsDetailCase){
+//        return healthNewsDetailCase;
+//    }
 
 //    @Provides
 //    @PerActivity

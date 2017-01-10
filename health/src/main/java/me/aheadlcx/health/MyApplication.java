@@ -1,12 +1,12 @@
 package me.aheadlcx.health;
 
 import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import me.aheadlcx.health.di.components.ApplicationComponent;
 import me.aheadlcx.health.di.components.DaggerApplicationComponent;
-import me.aheadlcx.health.di.components.TestComponent;
 import me.aheadlcx.health.di.modules.ApplicationModule;
 import me.aheadlcx.health.util.HealthSdk;
 
@@ -16,7 +16,7 @@ import me.aheadlcx.health.util.HealthSdk;
  * Date:2016/11/28 上午10:20
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     private ApplicationComponent applicationComponent;
     private static MyApplication instance;
     @Override

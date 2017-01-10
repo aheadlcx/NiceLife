@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import me.aheadlcx.health.base.BaseActivity;
+import me.aheadlcx.health.di.modules.ActivityModule;
 import me.aheadlcx.health.di.modules.ApplicationModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
 import me.aheadlcx.health.domain.executor.PostExecutionThread;
@@ -20,15 +21,16 @@ import me.aheadlcx.health.domain.repository.HealthNewsRepository;
 @Singleton
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
-    void inject(BaseActivity baseActivity);
+//    void inject(BaseActivity baseActivity);
 
-    Context getContext();
+//    Context getContext();
 
-    ThreadExecutor threadExecutor();
+//    ThreadExecutor threadExecutor();
 
-    PostExecutionThread postExecutionThread();
+//    PostExecutionThread postExecutionThread();
 
-    HealthNewsRepository provideHealthNewsRepo();
-//    HealthNewsComponents plus(HealthNewsModule HealthNewsModule);
+//    HealthNewsRepository provideHealthNewsRepo();
+
+    ActivityComponent plus(ActivityModule module);
 
 }

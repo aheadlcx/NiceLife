@@ -19,9 +19,9 @@ import javax.inject.Inject;
 import me.aheadlcx.health.MyApplication;
 import me.aheadlcx.health.R;
 import me.aheadlcx.health.base.BaseFragment;
-import me.aheadlcx.health.di.components.DaggerHealthNewsComponents;
 import me.aheadlcx.health.di.modules.ActivityModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
+import me.aheadlcx.health.di.modules.HealthNewslistModule;
 import me.aheadlcx.health.model.HealthNewsItem;
 import me.aheadlcx.health.util.DensityUtil;
 import me.aheadlcx.uilib.uikit.loadmore.OnLoadMoreListener;
@@ -86,12 +86,15 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
 
     @Override
     protected void inject() {
-        DaggerHealthNewsComponents.builder()
-                .applicationComponent(MyApplication.getInstance().getApplicationComponent())
-                .activityModule(new ActivityModule(getActivity()))
-                .healthNewsModule(new HealthNewsModule())
-                .build().inject(this);
-//                .testComponent(DaggerTestComponent.builder().build())
+        MyApplication.getInstance().getApplicationComponent().plus(new ActivityModule(getActivity()))
+                .plus(new HealthNewsModule())
+                .plus(new HealthNewslistModule())
+                .inject(this);
+//        DaggerHealthNewsComponents.builder()
+//                .applicationComponent(MyApplication.getInstance().getApplicationComponent())
+//                .activityModule(new ActivityModule(getActivity()))
+//                .healthNewsModule(new HealthNewsModule())
+//                .build().inject(this);
         mPresent.setUi(this);
 
     }

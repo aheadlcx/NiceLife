@@ -18,9 +18,10 @@ import me.aheadlcx.health.R;
 import me.aheadlcx.health.api.ApiUtils;
 import me.aheadlcx.health.api.ImageUtils;
 import me.aheadlcx.health.base.BaseFragment;
-import me.aheadlcx.health.di.components.DaggerHealthNewsComponents;
 import me.aheadlcx.health.di.modules.ActivityModule;
+import me.aheadlcx.health.di.modules.HealthNewsDetailModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
+import me.aheadlcx.health.di.modules.HealthNewslistModule;
 import me.aheadlcx.health.model.HealthNewsDetailResponse;
 
 /**
@@ -56,10 +57,14 @@ public class HealthNewsDetailFragment extends BaseFragment implements HealthNews
 
     @Override
     protected void inject() {
-        DaggerHealthNewsComponents.builder().activityModule(new ActivityModule(getActivity()))
-                .healthNewsModule(new HealthNewsModule())
-                .applicationComponent(MyApplication.getInstance().getApplicationComponent())
-                .build().inject(this);
+//        DaggerHealthNewsComponents.builder().activityModule(new ActivityModule(getActivity()))
+//                .healthNewsModule(new HealthNewsModule())
+//                .applicationComponent(MyApplication.getInstance().getApplicationComponent())
+//                .build().inject(this);
+        MyApplication.getInstance().getApplicationComponent().plus(new ActivityModule(getActivity()))
+                .plus(new HealthNewsModule())
+                .plus(new HealthNewsDetailModule())
+                .inject(this);
     }
 
     @Override
