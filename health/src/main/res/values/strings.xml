@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Health</string>
+    <string name="transitionName_image_view">transitionName_image_view</string>
 </resources>

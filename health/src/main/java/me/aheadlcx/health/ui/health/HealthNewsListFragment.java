@@ -1,6 +1,6 @@
 package me.aheadlcx.health.ui.health;
 
-import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -20,8 +21,6 @@ import javax.inject.Inject;
 
 import me.aheadlcx.health.MyApplication;
 import me.aheadlcx.health.R;
-import me.aheadlcx.health.base.BaseFragment;
-import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.constant.IntentKey;
 import me.aheadlcx.health.di.modules.ActivityModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
@@ -73,11 +72,14 @@ public class HealthNewsListFragment extends HealthBaseFragment implements Health
 
         adapter.setCallBack(new HealthNewsAdapter.HealthCallBack() {
             @Override
-            public void onClick(HealthNewsItem item) {
+            public void onClick(HealthNewsItem item, ImageView itemImage) {
                 Intent intent = new Intent(getActivity(), HealthNewsDetailActivity.class);
                 intent.putExtra("id", ((long) (item.getId())));
                 intent.putExtra(IntentKey.HEALTH_TYPE, getHealthType());
-                getActivity().startActivity(intent);
+
+                ActivityOptions options = ActivityOptions
+                        .makeSceneTransitionAnimation(getActivity(), itemImage, itemImage.getTransitionName());
+                getActivity().startActivity(intent, options.toBundle());
             }
         });
         recycleView.setAdapter(adapter);

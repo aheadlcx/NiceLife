@@ -69,7 +69,7 @@ public class HealthNewsAdapter extends RecyclerView.Adapter<HealthNewsAdapter.VH
     }
 
     @Override
-    public void onBindViewHolder(VH holder, final int position) {
+    public void onBindViewHolder(final VH holder, final int position) {
         holder.itemTitle.setText(mList.get(position).getTitle());
         holder.txtItemDes.setText(mList.get(position).getDescription());
         holder.txtItemLabel.setText(mList.get(position).getKeywords());
@@ -80,7 +80,7 @@ public class HealthNewsAdapter extends RecyclerView.Adapter<HealthNewsAdapter.VH
             @Override
             public void onClick(View v) {
                 if (mCallBack != null) {
-                    mCallBack.onClick(mList.get(position));
+                    mCallBack.onClick(mList.get(position), holder.itemImage);
                 }
             }
         });
@@ -110,6 +110,6 @@ public class HealthNewsAdapter extends RecyclerView.Adapter<HealthNewsAdapter.VH
     }
 
     public static interface HealthCallBack{
-        void onClick(HealthNewsItem item);
+        void onClick(HealthNewsItem item, ImageView itemImage);
     }
 }

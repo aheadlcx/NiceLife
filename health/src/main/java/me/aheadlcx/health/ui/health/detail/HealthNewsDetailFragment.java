@@ -1,5 +1,6 @@
 package me.aheadlcx.health.ui.health.detail;
 
+import android.app.ActivityOptions;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
@@ -49,11 +50,18 @@ public class HealthNewsDetailFragment extends HealthBaseFragment implements Heal
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
     private void initViews(View view) {
         this.txtContent = (TextView) view.findViewById(R.id.txtContent);
         this.imgDetail = (ImageView) view.findViewById(R.id.imgDetail);
         this.txtDes = (TextView) view.findViewById(R.id.txtDes);
         this.txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+        ActivityOptions.makeSceneTransitionAnimation(getActivity(), imgDetail, getString(R.string
+                .transitionName_image_view));
     }
 
     @Override

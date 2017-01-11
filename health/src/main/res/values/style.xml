@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="activity_translate_style" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_translate_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_translate_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_translate_close_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_translate_close_out</item>
+    </style>
+</resources>
