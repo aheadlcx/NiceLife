@@ -33,7 +33,7 @@ public abstract class Case {
         return null;
     }
 
-    public Observable caseDetailObservable(long id) {
+    public Observable caseDetailObservable(long id, @HealthType final int healthType) {
         return null;
     }
 
@@ -54,8 +54,8 @@ public abstract class Case {
         return mPostExecutionThread.getScheduler();
     }
 
-    public void execute(long id, Subscriber subscriber) {
-        mSubscription = this.caseDetailObservable(id)
+    public void execute(long id, Subscriber subscriber, @HealthType final int healthType) {
+        mSubscription = this.caseDetailObservable(id, healthType)
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(subscriber);
         connect();

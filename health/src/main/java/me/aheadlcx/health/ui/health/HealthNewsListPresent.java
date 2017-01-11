@@ -31,6 +31,7 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
     private boolean isLoadMore = false;
     @Inject
     HealthNewsDataRepository mDataRepository;
+    private int healthType = HealthType.TYPE_INFO;
 
     public HealthNewsListPresent() {
     }
@@ -53,12 +54,16 @@ public class HealthNewsListPresent implements HealthNewslistContract.Present {
         loadData(page, getHealthType());
     }
 
+    public void setHealthType(int healthType){
+        this.healthType = healthType;
+    }
+
     private int getHealthType(){
-        return HealthType.TYPE_INFO;
+        return healthType;
     }
 
     @Override
-    public void loadData(String page, @HealthType final int healthType) {
+    public void loadData(String page, final int healthType) {
         mDataRepository.healthNewsListObservabler(page, null, null, healthType, isLoadMore())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread(), true)

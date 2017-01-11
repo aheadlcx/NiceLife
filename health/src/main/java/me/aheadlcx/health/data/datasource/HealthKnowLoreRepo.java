@@ -6,6 +6,7 @@ import java.util.List;
 
 import me.aheadlcx.health.api.ApiUtils;
 import me.aheadlcx.health.api.HealthNewsListService;
+import me.aheadlcx.health.constant.HealthConstant;
 import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
 import me.aheadlcx.health.model.HealthNewsItem;
@@ -27,7 +28,7 @@ public class HealthKnowLoreRepo implements HealthNewsRepository {
                                                 Scheduler observeOnScheduler, @HealthType int
                                                             healthType, boolean isLoadMore) {
         return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthLoreList(page,
-                "5")
+                HealthConstant.pageSize)
                 .flatMap(new Func1<HealthNewsListResponse, Observable<List<HealthNewsItem>>>() {
                     @Override
                     public Observable<List<HealthNewsItem>> call(HealthNewsListResponse response) {
@@ -39,7 +40,8 @@ public class HealthKnowLoreRepo implements HealthNewsRepository {
     }
 
     @Override
-    public Observable healthNewsDetailObservabler(long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+    public Observable healthNewsDetailObservabler(long id, Scheduler subscribeOnScheduler,
+                                                  Scheduler observeOnScheduler, @HealthType int healthType) {
         return ApiUtils.getRetrofit().create(HealthNewsListService.class).getHealthLoreDetail(id);
     }
 }

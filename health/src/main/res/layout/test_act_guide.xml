@@ -16,10 +16,22 @@
             android:layout_height="100dp"
             android:gravity="center"
             android:background="@color/white"
-            android:text="txtMain"
+            android:text="健康资讯"
             android:layout_margin="5dp"
             android:textColor="#111111"
             android:textSize="18dp"/>
+
+        <TextView
+            android:id="@+id/txtKnowLore"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:background="@color/white"
+            android:text="健康知识"
+            android:layout_margin="5dp"
+            android:textColor="#111111"
+            android:textSize="18dp"/>
+
 
         <TextView
             android:id="@+id/txtTest"

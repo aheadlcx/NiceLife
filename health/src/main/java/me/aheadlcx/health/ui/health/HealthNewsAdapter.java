@@ -30,10 +30,20 @@ public class HealthNewsAdapter extends RecyclerView.Adapter<HealthNewsAdapter.VH
 
     private List<HealthNewsItem> mList;
     private final Context mContext;
-
+    private HealthCallBack mCallBack;
     public HealthNewsAdapter(List<HealthNewsItem> list, Context context) {
         mList = list;
         mContext = context;
+    }
+
+    public HealthNewsAdapter setCallBack(HealthCallBack callBack) {
+        mCallBack = callBack;
+        return this;
+    }
+
+    public HealthCallBack getCallBack() {
+
+        return mCallBack;
     }
 
     public void addData(List<HealthNewsItem> data){
@@ -69,14 +79,9 @@ public class HealthNewsAdapter extends RecyclerView.Adapter<HealthNewsAdapter.VH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mList.get(position).setTest("after click");
-                Intent intent = new Intent(mContext, HealthNewsDetailActivity.class);
-                intent.putExtra("id", ((long) (mList.get(position).getId())));
-                TestModel model = new TestModel();
-                model.name = "haha";
-                model.mList = HealthNewsAdapter.this.mList;
-                intent.putExtra("test", model);
-                mContext.startActivity(intent);
+                if (mCallBack != null) {
+                    mCallBack.onClick(mList.get(position));
+                }
             }
         });
     }
@@ -102,5 +107,9 @@ public class HealthNewsAdapter extends RecyclerView.Adapter<HealthNewsAdapter.VH
             itemImage = (ImageView) view.findViewById(R.id.itemImage);
             itemTitle = (TextView) view.findViewById(R.id.itemTitle);
         }
+    }
+
+    public static interface HealthCallBack{
+        void onClick(HealthNewsItem item);
     }
 }

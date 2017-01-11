@@ -20,7 +20,8 @@ public class HealthNewsListAct extends BaseActivity {
         HealthNewsListFragment fragment = new HealthNewsListFragment();
         int type = getIntent().getIntExtra(IntentKey.HEALTH_TYPE, -1);
         if (type > 0){
-            fragment.getArguments().putInt(IntentKey.HEALTH_TYPE, type);
+//            fragment.getArguments().putInt(IntentKey.HEALTH_TYPE, type);
+            fragment.setHealthType(type);
         }
         getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment).commit();
     }

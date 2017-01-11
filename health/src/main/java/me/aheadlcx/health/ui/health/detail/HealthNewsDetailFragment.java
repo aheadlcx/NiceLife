@@ -23,6 +23,7 @@ import me.aheadlcx.health.di.modules.HealthNewsDetailModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
 import me.aheadlcx.health.di.modules.HealthNewslistModule;
 import me.aheadlcx.health.model.HealthNewsDetailResponse;
+import me.aheadlcx.health.ui.health.HealthBaseFragment;
 
 /**
  * Description:
@@ -30,7 +31,7 @@ import me.aheadlcx.health.model.HealthNewsDetailResponse;
  * Date:2016/11/29 下午8:05
  */
 
-public class HealthNewsDetailFragment extends BaseFragment implements HealthNewsDetailContract.UI{
+public class HealthNewsDetailFragment extends HealthBaseFragment implements HealthNewsDetailContract.UI{
 
     private TextView txtTitle;
     private TextView txtDes;
@@ -65,12 +66,13 @@ public class HealthNewsDetailFragment extends BaseFragment implements HealthNews
                 .plus(new HealthNewsModule())
                 .plus(new HealthNewsDetailModule())
                 .inject(this);
+        mPresent.setHealthType(getHealthType());
     }
 
     @Override
     protected void loadData() {
         mPresent.setUi(this);
-        mPresent.loadData(id);
+        mPresent.loadData(id, getHealthType());
     }
 
     @Override

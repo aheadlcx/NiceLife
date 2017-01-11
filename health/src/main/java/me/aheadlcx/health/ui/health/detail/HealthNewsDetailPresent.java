@@ -2,6 +2,7 @@ package me.aheadlcx.health.ui.health.detail;
 
 import javax.inject.Inject;
 
+import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.di.Type;
 import me.aheadlcx.health.domain.interactor.Case;
 import me.aheadlcx.health.domain.interactor.DefaultSubscriber;
@@ -16,7 +17,7 @@ import me.aheadlcx.health.model.HealthNewsDetailResponse;
 public class HealthNewsDetailPresent implements HealthNewsDetailContract.Present {
     private HealthNewsDetailContract.UI mUI;
     private Case mCase;
-
+    private int healthType = HealthType.TYPE_INFO;
     @Inject
     public HealthNewsDetailPresent(@Type("detail") Case detailCase) {
         mCase = detailCase;
@@ -26,10 +27,16 @@ public class HealthNewsDetailPresent implements HealthNewsDetailContract.Present
     public void setUi(HealthNewsDetailContract.UI ui) {
         mUI = ui;
     }
+    public void setHealthType(int healthType){
+        this.healthType = healthType;
+    }
 
+    private int getHealthType(){
+        return healthType;
+    }
     @Override
-    public void loadData(long id) {
-        mCase.execute(id, mSubscriber);
+    public void loadData(long id, int healthType) {
+        mCase.execute(id, mSubscriber, healthType);
 
     }
 

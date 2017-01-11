@@ -1,5 +1,7 @@
 package me.aheadlcx.health.ui.health;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -19,10 +21,13 @@ import javax.inject.Inject;
 import me.aheadlcx.health.MyApplication;
 import me.aheadlcx.health.R;
 import me.aheadlcx.health.base.BaseFragment;
+import me.aheadlcx.health.constant.HealthType;
+import me.aheadlcx.health.constant.IntentKey;
 import me.aheadlcx.health.di.modules.ActivityModule;
 import me.aheadlcx.health.di.modules.HealthNewsModule;
 import me.aheadlcx.health.di.modules.HealthNewslistModule;
 import me.aheadlcx.health.model.HealthNewsItem;
+import me.aheadlcx.health.ui.health.detail.HealthNewsDetailActivity;
 import me.aheadlcx.health.util.DensityUtil;
 import me.aheadlcx.uilib.uikit.loadmore.OnLoadMoreListener;
 import me.aheadlcx.uilib.uikit.loadmore.RecyclerViewWithFooter;
@@ -33,7 +38,7 @@ import me.aheadlcx.uilib.uikit.loadmore.RecyclerViewWithFooter;
  * Date:2016/11/27 下午8:20
  */
 
-public class HealthNewsListFragment extends BaseFragment implements HealthNewslistContract.View {
+public class HealthNewsListFragment extends HealthBaseFragment implements HealthNewslistContract.View {
     private static final String TAG = "HealthNewsListFragment";
     private RecyclerViewWithFooter recycleView;
 
@@ -42,13 +47,20 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
     int originPage = 1;
     int curPage = originPage;
     HealthNewsAdapter adapter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_health_newslist, container, false);
+        init();
         initView(view);
         initListener();
         return view;
+    }
+
+    private void init() {
+        adapter = new HealthNewsAdapter(null
+                , getActivity());
     }
 
     private void initListener() {
@@ -58,15 +70,27 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
                 loadNextPage();
             }
         });
+
+        adapter.setCallBack(new HealthNewsAdapter.HealthCallBack() {
+            @Override
+            public void onClick(HealthNewsItem item) {
+                Intent intent = new Intent(getActivity(), HealthNewsDetailActivity.class);
+                intent.putExtra("id", ((long) (item.getId())));
+                intent.putExtra(IntentKey.HEALTH_TYPE, getHealthType());
+                getActivity().startActivity(intent);
+            }
+        });
+        recycleView.setAdapter(adapter);
     }
 
     private void initView(View view) {
         this.recycleView = (RecyclerViewWithFooter) view.findViewById(R.id.recycleView);
         recycleView.addItemDecoration(new RecyclerView.ItemDecoration() {
             Paint mPaint = new Paint();
+
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                outRect.set(0,0,0, DensityUtil.dip2px(8));
+                outRect.set(0, 0, 0, DensityUtil.dip2px(8));
             }
 
             @Override
@@ -96,6 +120,9 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
 //                .healthNewsModule(new HealthNewsModule())
 //                .build().inject(this);
         mPresent.setUi(this);
+//        int healthType = getArguments().getInt(IntentKey.HEALTH_TYPE, HealthType.TYPE_INFO);
+        mPresent.setHealthType(getHealthType());
+
 
     }
 
@@ -104,7 +131,7 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
         mPresent.loadFirst("1");
     }
 
-    private void loadNextPage(){
+    private void loadNextPage() {
         Log.i(TAG, "loadNextPage: ");
 //        recycleView.setLoading();
         curPage++;
@@ -112,15 +139,12 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
     }
 
 
-
     @Override
     public void setData(List<HealthNewsItem> lists) {
         Log.i(TAG, "setData: ");
         if (lists != null && lists.size() != 0) {
-             adapter = new HealthNewsAdapter(lists
-                    , getActivity());
+            adapter.setList(lists);
             recycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recycleView.setAdapter(adapter);
             recycleView.setPullToLoad();
         }
     }
@@ -133,4 +157,5 @@ public class HealthNewsListFragment extends BaseFragment implements HealthNewsli
             adapter.addData(lists);
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package me.aheadlcx.health.ui.health.detail;
 
+import me.aheadlcx.health.constant.HealthType;
 import me.aheadlcx.health.model.HealthNewsDetailResponse;
 
 /**
@@ -15,6 +16,7 @@ public interface HealthNewsDetailContract {
 
     interface Present{
         void setUi(UI ui);
-        void loadData(long id);
+        void loadData(long id, int healthType);
+        void setHealthType( int healthType);
     }
 }

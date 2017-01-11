@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import me.aheadlcx.health.R;
 import me.aheadlcx.health.base.BaseActivity;
+import me.aheadlcx.health.constant.HealthType;
+import me.aheadlcx.health.constant.IntentKey;
 import me.aheadlcx.health.ui.health.HealthNewsListAct;
 
 /**
@@ -42,6 +44,7 @@ public class GuideAct extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GuideAct.this, HealthNewsListAct.class);
+                intent.putExtra(IntentKey.HEALTH_TYPE, HealthType.TYPE_INFO);
                 startActivity(intent);
             }
         });
@@ -50,6 +53,15 @@ public class GuideAct extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GuideAct.this, TestListSyncAct.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.txtKnowLore).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GuideAct.this, HealthNewsListAct.class);
+                intent.putExtra(IntentKey.HEALTH_TYPE, HealthType.TYPE_LORE);
                 startActivity(intent);
             }
         });

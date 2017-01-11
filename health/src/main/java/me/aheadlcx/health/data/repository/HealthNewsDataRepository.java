@@ -2,13 +2,16 @@ package me.aheadlcx.health.data.repository;
 
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import me.aheadlcx.health.constant.HealthType;
+import me.aheadlcx.health.data.datasource.HealthKnowLoreRepo;
 import me.aheadlcx.health.data.datasource.HealthNewsLocalRepo;
 import me.aheadlcx.health.data.datasource.HealthNewsNetRepo;
 import me.aheadlcx.health.domain.repository.HealthNewsRepository;
@@ -32,21 +35,26 @@ import rx.schedulers.Schedulers;
 public class HealthNewsDataRepository implements HealthNewsRepository {
     private static final String TAG = "HealthNewsDataRepositor";
     private HealthNewsLocalRepo mLocalRepo;
-    private HealthNewsNetRepo mNetRepo;
+    private HealthNewsRepository mNetRepo;
+    private HealthNewsRepository mNetInfoRepo;
+    private HealthNewsRepository mNetLoreRepo;
+    //    private HealthNewsNetRepo mNetRepo;
     ConnectableObservable replay;
 
-    private ArrayMap<Long, HealthNewsDetailResponse> detailResp = new ArrayMap<>();
+    //    private ArrayMap<Long, HealthNewsDetailResponse> detailResp = new ArrayMap<>();
+    private SparseArray<Map<Long, HealthNewsDetailResponse>> mMapSparseArray = new SparseArray();
 
     @Inject
     public HealthNewsDataRepository() {
         mLocalRepo = new HealthNewsLocalRepo();
-        mNetRepo = new HealthNewsNetRepo();
+//        mNetRepo = new HealthNewsNetRepo();
     }
 
     @Override
     public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler,
                                                 Scheduler observeOnScheduler, @HealthType int
                                                         healthType, boolean isLoadMore) {
+        checkNetRepo(healthType);
         final Observable netObservale = mNetRepo
                 .healthNewsListObservabler(page, subscribeOnScheduler, observeOnScheduler,
                         healthType, isLoadMore)
@@ -65,36 +73,66 @@ public class HealthNewsDataRepository implements HealthNewsRepository {
         return Observable.concat(localObservale, netObservale);
     }
 
+    private void checkNetRepo(@HealthType int healthType) {
+        if (healthType == HealthType.TYPE_INFO) {
+            if (mNetInfoRepo == null) {
+                mNetInfoRepo = new HealthNewsNetRepo();
+            }
+            mNetRepo = mNetInfoRepo;
+        } else if (healthType == HealthType.TYPE_LORE) {
+            if (mNetLoreRepo == null) {
+                mNetLoreRepo = new HealthKnowLoreRepo();
+            }
+            mNetRepo = mNetLoreRepo;
+        }
+    }
+
     @Override
-    public Observable healthNewsDetailObservabler(final long id, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
-        if (detailResp.get(id) != null) {
+    public Observable healthNewsDetailObservabler(final long id, Scheduler subscribeOnScheduler,
+                                                  Scheduler observeOnScheduler, @HealthType final int healthType) {
+        if (mMapSparseArray.get(healthType) != null && mMapSparseArray.get(healthType).get(id) !=
+                null) {
+//        if (detailResp.get(id) != null) {
             return Observable.create(new Observable.OnSubscribe<HealthNewsDetailResponse>() {
                 @Override
                 public void call(Subscriber<? super HealthNewsDetailResponse> subscriber) {
-                    subscriber.onNext(detailResp.get(id));
+//                    subscriber.onNext(detailResp.get(id));
+                    subscriber.onNext(mMapSparseArray.get(healthType).get(id));
                     subscriber.onCompleted();
                 }
             });
         }
+        checkNetRepo(healthType);
         Observable net = mNetRepo.healthNewsDetailObservabler(id, subscribeOnScheduler,
-                observeOnScheduler)
+                observeOnScheduler, healthType)
                 .doOnNext(new Action1<HealthNewsDetailResponse>() {
                     @Override
                     public void call(HealthNewsDetailResponse healthNewsDetailResponse) {
                         mLocalRepo.insertDetail(healthNewsDetailResponse);
-                        detailResp.put(id, healthNewsDetailResponse);
+//                        detailResp.put(id, healthNewsDetailResponse);
+                        putMoney(id, healthType, healthNewsDetailResponse);
                     }
                 });
 
-        Observable<HealthNewsDetailResponse> local = mLocalRepo.getDetail(id)
+        Observable<HealthNewsDetailResponse> local = mLocalRepo.getDetail(id, healthType)
                 .doOnNext(new Action1<HealthNewsDetailResponse>() {
                     @Override
                     public void call(HealthNewsDetailResponse response) {
-                        detailResp.put(id, response);
+//                        detailResp.put(id, response);
+                        putMoney(id, healthType, response);
                     }
                 });
 
         return Observable.concat(local, net);
+    }
+
+    private void putMoney(long id, @HealthType int healthType, HealthNewsDetailResponse response) {
+        Map<Long, HealthNewsDetailResponse> map = mMapSparseArray.get(healthType);
+        if (map == null) {
+            map = new ArrayMap<>();
+        }
+        map.put(id, response);
+        mMapSparseArray.put(healthType, map);
     }
 
     private void subscribeAnthoer() {

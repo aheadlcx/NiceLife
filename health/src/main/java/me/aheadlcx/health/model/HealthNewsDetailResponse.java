@@ -17,6 +17,7 @@ public class HealthNewsDetailResponse extends RealmObject{
     private int id;
     private String img;
     private int infoclass;
+    private int loreclass;
     private String keywords;
     private String message;
     private int rcount;
@@ -24,6 +25,16 @@ public class HealthNewsDetailResponse extends RealmObject{
     private long time;
     private String title;
     private String url;
+
+    public HealthNewsDetailResponse setLoreclass(int loreclass) {
+        this.loreclass = loreclass;
+        return this;
+    }
+
+    public int getLoreclass() {
+
+        return loreclass;
+    }
 
     public int getCount() {
         return count;

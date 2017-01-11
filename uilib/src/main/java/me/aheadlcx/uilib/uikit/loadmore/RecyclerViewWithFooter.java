@@ -232,6 +232,7 @@ public class RecyclerViewWithFooter extends RecyclerView {
                 if (newState == 0) {
                     LayoutManager layoutManager = recyclerView.getLayoutManager();
                     if (layoutManager instanceof LinearLayoutManager) {
+                        if (recyclerView.getAdapter() == null)return;
                         if (((LinearLayoutManager) layoutManager).findLastVisibleItemPosition() >= recyclerView.getAdapter().getItemCount() - 1) {
 //                            if (RecyclerViewWithFooter.this.mState == RecyclerViewWithFooter.STATE_PULL_TO_LOAD) {
 //                                RecyclerViewWithFooter.this.setLoading();

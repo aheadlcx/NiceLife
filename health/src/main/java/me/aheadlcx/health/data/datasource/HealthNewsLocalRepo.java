@@ -9,6 +9,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import me.aheadlcx.health.MyApplication;
 import me.aheadlcx.health.constant.HealthType;
@@ -29,10 +30,11 @@ import rx.schedulers.Schedulers;
 
 public class HealthNewsLocalRepo implements HealthNewsRepository {
     private static final String TAG = "notify";
+
     @Override
     public Observable healthNewsListObservabler(String page, Scheduler subscribeOnScheduler,
                                                 Scheduler observeOnScheduler, @HealthType final
-                                                    int healthType, boolean isLoadMore) {
+                                                int healthType, boolean isLoadMore) {
         final boolean isUiThread = Looper.getMainLooper() == Looper.myLooper();
 
         Observable<List<HealthNewsItem>> listObservable = Observable.create(new Observable.OnSubscribe<List<HealthNewsItem>>() {
@@ -63,14 +65,14 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
         return listObservable;
     }
 
-    private RealmResults<HealthNewsItem> getRealByType(Realm realm, @HealthType int healthType){
+    private RealmResults<HealthNewsItem> getRealByType(Realm realm, @HealthType int healthType) {
         RealmResults<HealthNewsItem> healthNewsItems = null;
-        switch(healthType){
+        switch (healthType) {
             case HealthType.TYPE_INFO:
-            healthNewsItems = realm.where(HealthNewsItem.class)
-                    .between("infoclass", 1, Integer.MAX_VALUE)
-                    .findAll();
-            break;
+                healthNewsItems = realm.where(HealthNewsItem.class)
+                        .between("infoclass", 1, Integer.MAX_VALUE)
+                        .findAll();
+                break;
             case HealthType.TYPE_LORE:
                 healthNewsItems = realm.where(HealthNewsItem.class)
                         .between("loreclass", 1, Integer.MAX_VALUE)
@@ -82,7 +84,9 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
     }
 
     @Override
-    public Observable healthNewsDetailObservabler(long page, Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+    public Observable healthNewsDetailObservabler(long page, Scheduler subscribeOnScheduler,
+                                                  Scheduler observeOnScheduler, @HealthType final
+                                                  int healthType) {
         return null;
     }
 
@@ -99,12 +103,13 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
         }
     }
 
-    public void delete(){
+    public void delete() {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.delete(HealthNewsItem.class);
         realm.commitTransaction();
-        realm.close();;
+        realm.close();
+        ;
     }
 
     public void insertDetail(HealthNewsDetailResponse response) {
@@ -119,14 +124,17 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
         realm.close();
     }
 
-    public Observable<HealthNewsDetailResponse> getDetail(final long id) {
+    public Observable<HealthNewsDetailResponse> getDetail(final long id, @HealthType final int healthType) {
         return Observable.create(new Observable.OnSubscribe<HealthNewsDetailResponse>() {
             @Override
             public void call(Subscriber<? super HealthNewsDetailResponse> subscriber) {
                 boolean isUi = Looper.getMainLooper() == Looper.myLooper();
                 Log.i(TAG, "getDetail call: isUi = " + isUi);
                 Realm realm = Realm.getDefaultInstance();
-                HealthNewsDetailResponse detailResponse = realm.where(HealthNewsDetailResponse.class).equalTo("id", id).findFirst();
+                HealthNewsDetailResponse detailResponse = null;
+                RealmQuery<HealthNewsDetailResponse> realmQuery = realm.where(HealthNewsDetailResponse.class).equalTo("id", id);
+                getReamlQuery(realmQuery, id, healthType)
+                        .findFirst();
                 if (detailResponse == null) {
                     subscriber.onCompleted();
                     return;
@@ -139,5 +147,18 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
                 subscriber.onCompleted();
             }
         }).subscribeOn(Schedulers.io());
+    }
+
+    private RealmQuery<HealthNewsDetailResponse> getReamlQuery(RealmQuery<HealthNewsDetailResponse> realmQuery, final long id, @HealthType
+    final int healthType) {
+        String fieldName = "infoclass";
+        if (healthType == HealthType.TYPE_LORE) {
+            fieldName = "loreclass";
+        } else if (healthType == HealthType.TYPE_INFO) {
+            fieldName = "infoclass";
+        }
+        realmQuery.between(fieldName, 1, Integer.MAX_VALUE);
+        return realmQuery;
+
     }
 }
