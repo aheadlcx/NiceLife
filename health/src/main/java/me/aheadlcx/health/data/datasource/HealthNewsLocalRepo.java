@@ -119,7 +119,8 @@ public class HealthNewsLocalRepo implements HealthNewsRepository {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
 //        HealthNewsDetailResponse realmObject = realm.createObject(HealthNewsDetailResponse.class);
-        realm.copyToRealm(response);
+//        realm.copyToRealmOrUpdate(response);
+        realm.insertOrUpdate(response);
         realm.commitTransaction();
         realm.close();
     }

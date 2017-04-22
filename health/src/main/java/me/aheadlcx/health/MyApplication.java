@@ -1,7 +1,10 @@
 package me.aheadlcx.health;
 
 import android.app.Application;
+import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
+
+import java.io.File;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -32,7 +35,14 @@ public class MyApplication extends MultiDexApplication {
 
     private void initDb() {
 //        Realm.init(this);
-        RealmConfiguration configuration =new RealmConfiguration.Builder(this).build();
+        Environment.getExternalStorageState();
+        String filePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "nicelife";
+        File file = new File(filePath);
+        if (!file.exists()){
+            file.mkdirs();
+        }
+        RealmConfiguration configuration =new RealmConfiguration.Builder(this)
+                .build();
 //        Realm.deleteRealm(configuration);
         Realm.setDefaultConfiguration(configuration);
     }

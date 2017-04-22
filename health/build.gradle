@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 24
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
 
@@ -81,6 +81,7 @@ dependencies {
     testCompile testDependencies.robolectric
     //end
     compile 'com.android.support:multidex:1.0.1'
+
 
     compile project(":uilib")
 }
